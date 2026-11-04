@@ -7,7 +7,7 @@ const src=fs.readFileSync(path.join(__dirname,'../TornStaxx.user.js'),'utf8');
 test('Torn PDA metadata is at byte zero with permanent update URLs',()=>{
   assert.ok(src.startsWith('// ==UserScript==\n'));
   assert.match(src,/^\/\/ @name\s+TornStaxx - Unified Torn Command Centre/m);
-  assert.match(src,/^\/\/ @version\s+4\.0\.1/m);
+  assert.match(src,/^\/\/ @version\s+4\.0\.2/m);
   assert.match(src,/^\/\/ @author\s+IamEEKY/m);
   assert.match(src,/^\/\/ @match\s+https:\/\/www\.torn\.com\/\*/m);
   assert.match(src,/^\/\/ @downloadURL\s+https:\/\/raw\.githubusercontent\.com\/Tom-Peters\/TornStaxx\/main\/TornStaxx\.user\.js/m);
@@ -38,4 +38,14 @@ test('War module has separate safe startup and cross-world registration bridge',
   assert.match(src,/tornstaxx-war-runtime-v1/);
   assert.match(src,/warRuntime\(\)/);
   assert.doesNotMatch(src,/GM_xmlhttpRequest/);
+});
+
+
+test('War panel launch requires actual visible DOM and reports missing acknowledgements',()=>{
+  assert.match(src,/function checkWarPanelOpened\(attempt\)/);
+  assert.match(src,/getElementById\('warstaxx-root'\)/);
+  assert.match(src,/\.querySelector\('\.ws-panel'\)/);
+  assert.match(src,/setTimeout\(\(\)=>checkWarPanelOpened\(attempt\),1100\)/);
+  assert.match(src,/its full panel did not finish starting/);
+  assert.match(src,/No saved war data or API keys have been deleted/);
 });
