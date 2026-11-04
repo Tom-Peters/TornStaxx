@@ -1,4 +1,4 @@
-# TornStaxx 4.0.1 · module integration contract
+# TornStaxx 4.0.3 · module integration contract
 
 Hub source: [TornStaxx.user.js](../TornStaxx.user.js). Author: IamEEKY.
 
@@ -41,3 +41,7 @@ Hub deals only with context-level presentation and local preferences. API creden
 The War module retains the normal `staxx:register` and `staxx:open` CustomEvents. A secondary same-origin `window.postMessage` route transmits **only** `{__tornstaxxBridge:'tornstaxx-war-v1',kind:'register',id:'war'}` for registration, and a restricted `{kind:'open',id:'war',section,alertId}` on user action. The hub requires the current window, same origin, exact bridge name, fixed ID and known operation before acting. These messages contain no credentials or private Torn data.
 
 The War startup probe writes a short-lived `tornstaxx-war-runtime-v1` localStorage marker with module version, page pathname, observation timestamp and startup phase. The hub accepts the marker only for the same page and no older than 90 seconds. It is an injection diagnostic, not game-data evidence. Missing storage must not prevent normal registration. If the hub receives neither a module registration nor a current marker, it reports that the script was not seen executing; an enabled Torn PDA toggle alone is insufficient.
+
+## War-TornStaxx 0.2.3 visual-open confirmation
+
+The War loader no longer announces `staxx:register` until its main UI has mounted. The main module reports `staxx:panel` after making its panel visible, not before. It exposes `#warstaxx-dom-open`, a hidden HTML button inside its own panel root; the hub invokes its native DOM `.click()` only on an explicit user open request and only when the panel has not already appeared through DOM events. The native click works across some Torn PDA isolated script contexts. It never writes Torn game state. After 1100 ms the hub checks that `#warstaxx-root` is visible and contains `.ws-panel`, otherwise it shows a precise startup/visibility diagnostic. Module caches are normalised non-destructively; no API keys or gameplay data are passed through the DOM bridge.
