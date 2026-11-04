@@ -2,7 +2,7 @@
 // @name         TornStaxx - Unified Torn Command Centre
 // @namespace    https://github.com/Tom-Peters/TornStaxx
 // @homepageURL  https://github.com/Tom-Peters/TornStaxx
-// @version      4.0.3
+// @version      4.0.4
 // @description  Shared Torn PDA hub for Profit, War, Training and Company: dashboard, alerts, next actions, search, deep links and activity.
 // @author       IamEEKY
 // @match        https://www.torn.com/*
@@ -21,7 +21,7 @@
   function startHub() {
     if (document.getElementById("staxx-hub-root")) return;
     document.getElementById("staxx-fallback-root")?.remove();
-    window.__TornStaxxHubVersion = "4.0.3";
+    window.__TornStaxxHubVersion = "4.0.4";
     const root = document.createElement("div");
     root.id = "staxx-hub-root";
     root.innerHTML =
@@ -319,25 +319,47 @@
         return w;
       }catch(_){return null;}
     }
+    function warDomEvidence(){
+      // Do not confuse script-manager "enabled" with actual DOM injection.
+      // A real DOM beacon or panel can be read across Torn PDA script worlds.
+      const probe=document.getElementById('tornstaxx-war-execution-probe');
+      const warRoot=document.getElementById('warstaxx-root');
+      const button=document.getElementById('warstaxx-dom-open');
+      const marker=warRuntime();
+      const phase=String(probe?.dataset?.phase||marker?.phase||'').slice(0,20);
+      const version=String(probe?.dataset?.version||marker?.version||'unknown').slice(0,20);
+      const ready=Boolean(warRoot&&warRoot.isConnected&&warRoot.querySelector('.ws-panel')&&
+        warRoot.querySelector('.ws-content')&&warRoot.querySelector('.ws-tabs'));
+      const visible=Boolean(ready&&warRoot.style.display!=='none'&&warRoot.style.visibility!=='hidden');
+      return {
+        detected:Boolean(probe||warRoot||marker),probe:Boolean(probe),root:Boolean(warRoot),
+        button:Boolean(button),ready,visible,phase,version
+      };
+    }
     let warOpenAttempt=0;
     function checkWarPanelOpened(attempt){
       if(attempt!==warOpenAttempt)return;
-      const warRoot=document.getElementById('warstaxx-root');
-      const visible=Boolean(warRoot&&warRoot.isConnected&&warRoot.style.display!=='none'&&
-        warRoot.style.visibility!=='hidden'&&warRoot.querySelector('.ws-panel'));
-      if(visible)return;
-      // A registered loader is not proof of a visible War panel.
-      const marker=warRuntime();
-      const explanation=marker?.phase==='error'
-        ?'War-TornStaxx executed, but its UI startup failed. Update the War module to v0.2.3 and reload Torn.'
-        :marker?.phase==='loader'
-        ?'War-TornStaxx loader executed, but its full panel did not finish starting. Update War to v0.2.3 and reload Torn.'
-        :marker?.phase==='ready'
-        ?'War-TornStaxx reported ready, but its panel is not visible. Update both TornStaxx and the War module, then reload.'
-        :'War-TornStaxx did not acknowledge opening. The userscript may be listed as running in Torn PDA even though its UI did not execute. Check DevTools → Scripts and update the module.';
+      const evidence=warDomEvidence();
+      if(evidence.visible)return;
+      const reason=!evidence.detected
+        ?'The War script was not observed executing in this page. Torn PDA listing a script as enabled/running does not confirm its code reached the WebView.'
+        :evidence.phase==='error'
+        ?'War script injection was detected, but its own startup reported a failure.'
+        :!evidence.root
+        ?'War script loader was detected, but its full panel never mounted.'
+        :!evidence.button
+        ?'War panel DOM was detected, but the native open bridge was missing. The installed War module may be outdated.'
+        :evidence.ready
+        ?'War panel exists and is ready, but did not become visible after the open request.'
+        :'War panel DOM was detected, but essential UI elements were missing.';
+      const explanation='War-TornStaxx launch check: '+reason+
+        ' Detected version: '+evidence.version+'; phase: '+(evidence.phase||'not observed')+
+        '; probe: '+(evidence.probe?'yes':'no')+'; panel: '+(evidence.root?'yes':'no')+
+        '; DOM opener: '+(evidence.button?'yes':'no')+
+        '. Update War to v0.2.4 and TornStaxx to v4.0.4 if either is older.';
       setExpanded(true);switchHubView('alerts');
       alerts.replaceChildren(node('p','staxx-empty',explanation),
-        node('p','staxx-empty','No saved war data or API keys have been deleted. This message means the full War panel did not appear.'));
+        node('p','staxx-empty','No saved War records or API keys have been deleted. You can copy/share this message without exposing your settings.'));
       document.dispatchEvent(new CustomEvent('staxx:diagnostics-request'));
     }
     function openTool(id,alertId,section){
@@ -355,13 +377,13 @@
         }catch(_){}
         location.assign(location.origin+"/companies.php");return;
       }
-      const warMarker=id==="war"?warRuntime():null;
-      if(!active[id]&&!warMarker){
-        const warning=node("p","staxx-empty",
-          id==="war"
-            ?"War-TornStaxx has not executed on this Torn page: no registration or current runtime marker was detected. Update the War module itself to v0.2.1, confirm it is enabled and grant permissions if asked, then fully reload Torn. Check Browser DevTools → Scripts if this remains."
-            :"This tool is not running on this page. Check its enabled state and injection details in Torn PDA, then reload.");
-        setExpanded(true);switchHubView("alerts");alerts.replaceChildren(warning);
+      const warEvidence=id==='war'?warDomEvidence():null;
+      if(!active[id]&&!(warEvidence?.detected)){
+        const warning=node('p','staxx-empty',
+          id==='war'
+            ?'War-TornStaxx was not detected in the current Torn WebView. No execution beacon, War panel, or current local runtime marker is present. Check that version 0.2.4 is enabled in Torn PDA and set to inject at END, then fully reload this Torn page. The installer being listed as running alone does not establish that War code executed.'
+            :'This tool is not running on this page. Check its enabled state and injection details in Torn PDA, then reload.');
+        setExpanded(true);switchHubView('alerts');alerts.replaceChildren(warning);
         return;
       }
       panelOpen=true;setExpanded(false);launcherVisibility();
@@ -972,9 +994,9 @@
         if(n)maxLevel=Math.max(maxLevel,n.level==="urgent"?2:n.level==="warning"?1:0);
         if(!n && notices[e.id]?.count>0)muted++;
         const btn=node("button","staxx-tool");btn.type="button";btn.dataset.openStaxx=e.id;
-        const info=node("span","staxx-info");info.append(node("b","",e.label),node("small","",active[e.id]?e.desc:e.id==="war"&&warRuntime()
-          ?warRuntime().phase==='ready'?"War panel ready · awaiting launch":warRuntime().phase==='error'?
-          "Startup error detected · open for details":"Loader detected · full UI not confirmed"
+        const info=node("span","staxx-info");info.append(node("b","",e.label),node("small","",active[e.id]?e.desc:e.id==="war"&&warDomEvidence().detected
+          ?warDomEvidence().ready?"Panel detected · open directly":
+            "Loader detected · tap for diagnostics"
           :"Not running · check Torn PDA scripts"));
         btn.append(node("span","staxx-icon",e.icon),info,node("span","staxx-pill"+(count?" on":""),count||"›"));
         if(arrangeShown){
