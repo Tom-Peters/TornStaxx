@@ -55,3 +55,9 @@ TornStaxx's `warDomEvidence()` checks the probe, complete panel markup, and nati
 ## Smart-quote parser safeguard
 
 Torn PDA can encounter a pre-execution parser failure if a curly apostrophe is converted into a straight ASCII apostrophe inside a single-quoted JavaScript string. War 0.2.4 contained this exact hazard and failed a reproduction with `SyntaxError: Unexpected identifier 'actual'`. War 0.2.5 eliminates the two strings and uses ASCII source with Unicode escapes for display glyphs. All five active scripts must pass automated source parsing before and after simulated quote normalization. This is separate from event delivery and panel rendering. See `SUITE-AUDIT-2026-11-04.md`.
+
+## War-TornStaxx 0.2.6 own-faction identification
+
+War automatically resolves its own faction ID via official Torn API v2 `GET /key/info` (`user.faction_id`) using the module's user-owned key. If unavailable, it tries `GET /user/faction` then `GET /user/profile`. This is a specialist War data task: the standalone TornStaxx hub never obtains, stores or forwards the Torn API key.
+
+Auto mode is the default even for upgraded settings without an existing mode flag; successful identification is saved locally with source and verification timestamp, and periodically rechecked while the page is visible. A manual fallback can be selected in War settings. A verified faction change invalidates transient live own/opponent rosters and current war context, while preserving local manual records and historical reports. All game actions remain player-controlled.
