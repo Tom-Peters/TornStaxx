@@ -2,7 +2,7 @@
 // @name         TornStaxx - Unified Torn Command Centre
 // @namespace    https://github.com/Tom-Peters/TornStaxx
 // @homepageURL  https://github.com/Tom-Peters/TornStaxx
-// @version      4.0.2
+// @version      4.0.3
 // @description  Shared Torn PDA hub for Profit, War, Training and Company: dashboard, alerts, next actions, search, deep links and activity.
 // @author       IamEEKY
 // @match        https://www.torn.com/*
@@ -21,7 +21,7 @@
   function startHub() {
     if (document.getElementById("staxx-hub-root")) return;
     document.getElementById("staxx-fallback-root")?.remove();
-    window.__TornStaxxHubVersion = "4.0.2";
+    window.__TornStaxxHubVersion = "4.0.3";
     const root = document.createElement("div");
     root.id = "staxx-hub-root";
     root.innerHTML =
@@ -329,9 +329,9 @@
       // A registered loader is not proof of a visible War panel.
       const marker=warRuntime();
       const explanation=marker?.phase==='error'
-        ?'War-TornStaxx executed, but its UI startup failed. Update the War module to v0.2.2 and reload Torn.'
+        ?'War-TornStaxx executed, but its UI startup failed. Update the War module to v0.2.3 and reload Torn.'
         :marker?.phase==='loader'
-        ?'War-TornStaxx loader executed, but its full panel did not finish starting. Update War to v0.2.2 and reload Torn.'
+        ?'War-TornStaxx loader executed, but its full panel did not finish starting. Update War to v0.2.3 and reload Torn.'
         :marker?.phase==='ready'
         ?'War-TornStaxx reported ready, but its panel is not visible. Update both TornStaxx and the War module, then reload.'
         :'War-TornStaxx did not acknowledge opening. The userscript may be listed as running in Torn PDA even though its UI did not execute. Check DevTools → Scripts and update the module.';
@@ -372,6 +372,15 @@
       if(id==="war"){
         try{window.postMessage({__tornstaxxBridge:'tornstaxx-war-v1',
           kind:'open',id,section:detail.section,alertId:detail.alertId},location.origin);}catch(_){}
+        // DOM element click listeners work across isolated Torn PDA script worlds.
+        // Only a panel open is requested: this cannot submit attacks or game actions.
+        const warRoot=document.getElementById('warstaxx-root');
+        const domBridge=document.getElementById('warstaxx-dom-open');
+        if(domBridge&&typeof domBridge.click==='function'&&warRoot?.style.display!=='block'){
+          domBridge.dataset.section=detail.section||'overview';
+          domBridge.dataset.alertId=detail.alertId||'';
+          domBridge.click();
+        }
         const attempt=++warOpenAttempt;
         setTimeout(()=>checkWarPanelOpened(attempt),1100);
       }
