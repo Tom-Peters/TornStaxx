@@ -46,7 +46,7 @@ test('War panel launch requires actual visible DOM and reports missing acknowled
   assert.match(src,/getElementById\('warstaxx-root'\)/);
   assert.match(src,/\.querySelector\('\.ws-panel'\)/);
   assert.match(src,/setTimeout\(\(\)=>checkWarPanelOpened\(attempt\),1100\)/);
-  assert.match(src,/its full panel did not finish starting/);
+  assert.match(src,/War panel DOM was detected, but essential UI elements were missing/);
   assert.match(src,/No saved war data or API keys have been deleted/);
 });
 
