@@ -2,7 +2,7 @@
 // @name         TornStaxx - Unified Torn Command Centre
 // @namespace    https://github.com/Tom-Peters/TornStaxx
 // @homepageURL  https://github.com/Tom-Peters/TornStaxx
-// @version      4.0.4
+// @version      4.0.5
 // @description  Shared Torn PDA hub for Profit, War, Training and Company: dashboard, alerts, next actions, search, deep links and activity.
 // @author       IamEEKY
 // @match        https://www.torn.com/*
@@ -21,7 +21,7 @@
   function startHub() {
     if (document.getElementById("staxx-hub-root")) return;
     document.getElementById("staxx-fallback-root")?.remove();
-    window.__TornStaxxHubVersion = "4.0.4";
+    window.__TornStaxxHubVersion = "4.0.5";
     const root = document.createElement("div");
     root.id = "staxx-hub-root";
     root.innerHTML =
@@ -356,7 +356,7 @@
         ' Detected version: '+evidence.version+'; phase: '+(evidence.phase||'not observed')+
         '; probe: '+(evidence.probe?'yes':'no')+'; panel: '+(evidence.root?'yes':'no')+
         '; DOM opener: '+(evidence.button?'yes':'no')+
-        '. Update War to v0.2.4 and TornStaxx to v4.0.4 if either is older.';
+        '. Update the War module to v0.2.5 (smart-apostrophe parsing fix). If the hub is older than 4.0.5, update it too.';
       setExpanded(true);switchHubView('alerts');
       alerts.replaceChildren(node('p','staxx-empty',explanation),
         node('p','staxx-empty','No saved War records or API keys have been deleted. You can copy/share this message without exposing your settings.'));
@@ -381,7 +381,7 @@
       if(!active[id]&&!(warEvidence?.detected)){
         const warning=node('p','staxx-empty',
           id==='war'
-            ?'War-TornStaxx was not detected in the current Torn WebView. No execution beacon, War panel, or current local runtime marker is present. Check that version 0.2.4 is enabled in Torn PDA and set to inject at END, then fully reload this Torn page. The installer being listed as running alone does not establish that War code executed.'
+            ?'War-TornStaxx was not detected in the current Torn WebView. No execution beacon, War panel, or current local runtime marker is present. Open the installed War script editor and verify @version 0.2.5, which removes two smart-apostrophe parse hazards. Set injection timing to END and fully reload the Torn page. An enabled/running script-manager indicator does not prove that the source parsed or executed.'
             :'This tool is not running on this page. Check its enabled state and injection details in Torn PDA, then reload.');
         setExpanded(true);switchHubView('alerts');alerts.replaceChildren(warning);
         return;
