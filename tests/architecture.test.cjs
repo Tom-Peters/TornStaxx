@@ -28,3 +28,14 @@ test('preserves action, diagnostic and evidence routing',()=>{
     assert.ok(src.includes(feature),feature);
   assert.doesNotMatch(src,/GM_xmlhttpRequest|fetch\s*\(\s*['"]https:\/\/api\.torn\.com/);
 });
+
+
+test('War module has separate safe startup and cross-world registration bridge',()=>{
+  assert.match(src,/tornstaxx-war-v1/);
+  assert.match(src,/kind:'open'/);
+  assert.match(src,/d\.kind!=='register'/);
+  assert.match(src,/e\.origin!==location\.origin/);
+  assert.match(src,/tornstaxx-war-runtime-v1/);
+  assert.match(src,/warRuntime\(\)/);
+  assert.doesNotMatch(src,/GM_xmlhttpRequest/);
+});
