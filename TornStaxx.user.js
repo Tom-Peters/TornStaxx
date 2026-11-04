@@ -313,7 +313,7 @@
     function warRuntime(){
       try{
         const w=JSON.parse(localStorage.getItem('tornstaxx-war-runtime-v1')||'null');
-        if(!w||w.id!=='war'||!/^\\d+\\.\\d+\\.\\d+$/.test(String(w.version))||
+        if(!w||w.id!=='war'||!/^\d+\.\d+\.\d+$/.test(String(w.version))||
            w.path!==location.pathname||!['loader','ready'].includes(w.phase)||
            !Number.isFinite(w.at)||w.at>Date.now()+10000||Date.now()-w.at>90000)return null;
         return w;
