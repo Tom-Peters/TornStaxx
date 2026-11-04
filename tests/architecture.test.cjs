@@ -7,7 +7,7 @@ const src=fs.readFileSync(path.join(__dirname,'../TornStaxx.user.js'),'utf8');
 test('Torn PDA metadata is at byte zero with permanent update URLs',()=>{
   assert.ok(src.startsWith('// ==UserScript==\n'));
   assert.match(src,/^\/\/ @name\s+TornStaxx - Unified Torn Command Centre/m);
-  assert.match(src,/^\/\/ @version\s+4\.0\.2/m);
+  assert.match(src,/^\/\/ @version\s+4\.0\.3/m);
   assert.match(src,/^\/\/ @author\s+IamEEKY/m);
   assert.match(src,/^\/\/ @match\s+https:\/\/www\.torn\.com\/\*/m);
   assert.match(src,/^\/\/ @downloadURL\s+https:\/\/raw\.githubusercontent\.com\/Tom-Peters\/TornStaxx\/main\/TornStaxx\.user\.js/m);
@@ -48,4 +48,12 @@ test('War panel launch requires actual visible DOM and reports missing acknowled
   assert.match(src,/setTimeout\(\(\)=>checkWarPanelOpened\(attempt\),1100\)/);
   assert.match(src,/its full panel did not finish starting/);
   assert.match(src,/No saved war data or API keys have been deleted/);
+});
+
+
+test('War standalone launch falls back to a real DOM control for isolated PDA scripts',()=>{
+ assert.match(src,/getElementById\('warstaxx-dom-open'\)/);
+ assert.match(src,/domBridge\.dataset\.section=/);
+ assert.match(src,/domBridge\.click\(\)/);
+ assert.match(src,/warRoot\?\.style\.display!==\'block\'/);
 });
