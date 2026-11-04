@@ -1,4 +1,4 @@
-# TornStaxx 4.0 · module integration contract
+# TornStaxx 4.0.1 · module integration contract
 
 Hub source: [TornStaxx.user.js](../TornStaxx.user.js). Author: IamEEKY.
 
@@ -35,3 +35,9 @@ Only `source: 'api'` verified log events may be described as verified Torn event
 | company | Company-TornStaxx | Employees, training, wage advice, payments and growth |
 
 Hub deals only with context-level presentation and local preferences. API credentials remain protected in the respective module's existing key workflow; never send credentials over CustomEvents. Never submit Torn mutations, post faction orders, or turn user-directed field prefill into an automatic purchase.
+
+## War-TornStaxx v0.2.1 compatibility bridge
+
+The War module retains the normal `staxx:register` and `staxx:open` CustomEvents. A secondary same-origin `window.postMessage` route transmits **only** `{__tornstaxxBridge:'tornstaxx-war-v1',kind:'register',id:'war'}` for registration, and a restricted `{kind:'open',id:'war',section,alertId}` on user action. The hub requires the current window, same origin, exact bridge name, fixed ID and known operation before acting. These messages contain no credentials or private Torn data.
+
+The War startup probe writes a short-lived `tornstaxx-war-runtime-v1` localStorage marker with module version, page pathname, observation timestamp and startup phase. The hub accepts the marker only for the same page and no older than 90 seconds. It is an injection diagnostic, not game-data evidence. Missing storage must not prevent normal registration. If the hub receives neither a module registration nor a current marker, it reports that the script was not seen executing; an enabled Torn PDA toggle alone is insufficient.
