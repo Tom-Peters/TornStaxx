@@ -7,7 +7,7 @@ const src=fs.readFileSync(path.join(__dirname,'../TornStaxx.user.js'),'utf8');
 test('Torn PDA metadata is at byte zero with permanent update URLs',()=>{
   assert.ok(src.startsWith('// ==UserScript==\n'));
   assert.match(src,/^\/\/ @name\s+TornStaxx - Unified Torn Command Centre/m);
-  assert.match(src,/^\/\/ @version\s+4\.0\.3/m);
+  assert.match(src,/^\/\/ @version\s+4\.0\.4/m);
   assert.match(src,/^\/\/ @author\s+IamEEKY/m);
   assert.match(src,/^\/\/ @match\s+https:\/\/www\.torn\.com\/\*/m);
   assert.match(src,/^\/\/ @downloadURL\s+https:\/\/raw\.githubusercontent\.com\/Tom-Peters\/TornStaxx\/main\/TornStaxx\.user\.js/m);
@@ -56,4 +56,16 @@ test('War standalone launch falls back to a real DOM control for isolated PDA sc
  assert.match(src,/domBridge\.dataset\.section=/);
  assert.match(src,/domBridge\.click\(\)/);
  assert.match(src,/warRoot\?\.style\.display!==\'block\'/);
+});
+
+
+test('War injection diagnostics check actual DOM even without shared storage or registration',()=>{
+  assert.match(src,/function warDomEvidence\(\)/);
+  assert.match(src,/getElementById\('tornstaxx-war-execution-probe'\)/);
+  assert.match(src,/getElementById\('warstaxx-root'\)/);
+  assert.match(src,/getElementById\('warstaxx-dom-open'\)/);
+  assert.match(src,/if\(!active\[id\]&&\!\(warEvidence\?\.detected\)\)/);
+  assert.match(src,/War-TornStaxx launch check:/);
+  assert.match(src,/version 0\.2\.4/);
+  assert.doesNotMatch(src,/Update the War module itself to v0\.2\.1/);
 });
