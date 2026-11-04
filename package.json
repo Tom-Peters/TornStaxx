@@ -1,0 +1,12 @@
+{
+  "name": "tornstaxx",
+  "version": "4.0.0",
+  "private": true,
+  "author": "IamEEKY",
+  "license": "MIT",
+  "scripts": {
+    "test": "node --test tests/*.test.cjs",
+    "check": "node --check TornStaxx.user.js && npm test"
+  },
+  "engines": {"node": ">=20"}
+}

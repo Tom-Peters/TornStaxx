@@ -1,0 +1,36 @@
+{
+  "schema_version": 2,
+  "owner": "IamEEKY",
+  "hub": {
+    "repository": "TornStaxx",
+    "entrypoint": "TornStaxx.user.js",
+    "version": "4.0.0"
+  },
+  "modules": [
+    {
+      "id": "profit",
+      "label": "Profit-TornStaxx",
+      "repository": "Torn-ProfitStaxx",
+      "entrypoint": "ProfitStaxx.user.js"
+    },
+    {
+      "id": "war",
+      "label": "War-TornStaxx",
+      "repository": "Torn-WarStaxx",
+      "entrypoint": "WarStaxx.user.js"
+    },
+    {
+      "id": "happy",
+      "label": "Training-TornStaxx",
+      "repository": "Torn-Happy-Jump-Helper",
+      "entrypoint": "Torn-Happy-Jump-Helper-preview.user.js",
+      "channel": "preview"
+    },
+    {
+      "id": "company",
+      "label": "Company-TornStaxx",
+      "repository": "Torn-Company-Helper",
+      "entrypoint": "Torn-Company-Helper.user.js"
+    }
+  ]
+}
