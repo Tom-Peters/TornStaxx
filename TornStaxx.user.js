@@ -2,7 +2,7 @@
 // @name         TornStaxx - Unified Torn Command Centre
 // @namespace    https://github.com/Tom-Peters/TornStaxx
 // @homepageURL  https://github.com/Tom-Peters/TornStaxx
-// @version      4.0.0
+// @version      4.0.1
 // @description  Shared Torn PDA hub for Profit, War, Training and Company: dashboard, alerts, next actions, search, deep links and activity.
 // @author       IamEEKY
 // @match        https://www.torn.com/*
@@ -21,7 +21,7 @@
   function startHub() {
     if (document.getElementById("staxx-hub-root")) return;
     document.getElementById("staxx-fallback-root")?.remove();
-    window.__TornStaxxHubVersion = "4.0.0";
+    window.__TornStaxxHubVersion = "4.0.1";
     const root = document.createElement("div");
     root.id = "staxx-hub-root";
     root.innerHTML =
@@ -310,6 +310,15 @@
       usage.push(record);usage=usage.slice(-50);saveLocal(usageKey,usage);renderFrequent();
     }
     function storedUse(key){return usage.find(x=>x.key===key);}
+    function warRuntime(){
+      try{
+        const w=JSON.parse(localStorage.getItem('tornstaxx-war-runtime-v1')||'null');
+        if(!w||w.id!=='war'||!/^\\d+\\.\\d+\\.\\d+$/.test(String(w.version))||
+           w.path!==location.pathname||!['loader','ready'].includes(w.phase)||
+           !Number.isFinite(w.at)||w.at>Date.now()+10000||Date.now()-w.at>90000)return null;
+        return w;
+      }catch(_){return null;}
+    }
     function openTool(id,alertId,section){
       const routes=sectionsByTool[id]||entries.find(e=>e.id===id)?.sections||[];
       const validSection=routes.some(item=>item[0]===section)?section:null;
@@ -325,17 +334,22 @@
         }catch(_){}
         location.assign(location.origin+"/companies.php");return;
       }
-      if(!active[id]){
+      const warMarker=id==="war"?warRuntime():null;
+      if(!active[id]&&!warMarker){
         const warning=node("p","staxx-empty",
           id==="war"
-            ?"War-TornStaxx did not register on this page. Your Torn PDA installation may be enabled but not running here. Check the script version, update it in Manage Scripts, then reload Torn. Use Browser DevTools → Scripts to check whether War-TornStaxx was injected and whether an error occurred."
+            ?"War-TornStaxx has not executed on this Torn page: no registration or current runtime marker was detected. Update the War module itself to v0.2.1, confirm it is enabled and grant permissions if asked, then fully reload Torn. Check Browser DevTools → Scripts if this remains."
             :"This tool is not running on this page. Check its enabled state and injection details in Torn PDA, then reload.");
         setExpanded(true);switchHubView("alerts");alerts.replaceChildren(warning);
         return;
       }
       panelOpen=true;setExpanded(false);launcherVisibility();
       document.dispatchEvent(new CustomEvent("staxx:closeall"));
-      document.dispatchEvent(new CustomEvent("staxx:open",{detail:{id,alertId:alertId||null,section:alertId?null:validSection}}));
+      const detail={id,alertId:alertId||null,section:alertId?null:validSection};
+      document.dispatchEvent(new CustomEvent("staxx:open",{detail}));
+      // War's minimal identity-only sideband handles Torn PDA isolated userscript contexts.
+      if(id==="war")try{window.postMessage({__tornstaxxBridge:'tornstaxx-war-v1',
+        kind:'open',id,section:detail.section,alertId:detail.alertId},location.origin);}catch(_){}
     }
     function timeUntil(ms) {
       if(!Number.isFinite(ms)||ms<=0)return "";
@@ -924,7 +938,8 @@
         if(n)maxLevel=Math.max(maxLevel,n.level==="urgent"?2:n.level==="warning"?1:0);
         if(!n && notices[e.id]?.count>0)muted++;
         const btn=node("button","staxx-tool");btn.type="button";btn.dataset.openStaxx=e.id;
-        const info=node("span","staxx-info");info.append(node("b","",e.label),node("small","",active[e.id]?e.desc:"Not running · check Torn PDA scripts"));
+        const info=node("span","staxx-info");info.append(node("b","",e.label),node("small","",active[e.id]?e.desc:e.id==="war"&&warRuntime()
+          ?"Detected by runtime marker · opening via bridge":"Not running · check Torn PDA scripts"));
         btn.append(node("span","staxx-icon",e.icon),info,node("span","staxx-pill"+(count?" on":""),count||"›"));
         if(arrangeShown){
           const row=node("div","staxx-toolrow"),up=node("button","staxx-move","↑"),down=node("button","staxx-move","↓");
@@ -1115,6 +1130,16 @@
       const key=id+'/'+d.section,prior=storedUse(key);
       if(prior&&Date.now()-Number(prior.last)<10000)return;
       recordUse(id,d.section);
+    });
+    // Only accept the fixed War identity across the same-origin window bridge.
+    // No arbitrary page-supplied data, API keys or gameplay actions are accepted.
+    window.addEventListener('message',e=>{
+      if(e.source!==window||e.origin!==location.origin)return;
+      const d=e.data;
+      if(d?.__tornstaxxBridge!=='tornstaxx-war-v1'||d.kind!=='register'||d.id!=='war')return;
+      document.dispatchEvent(new CustomEvent('staxx:register',{detail:{
+        id:'war',label:'War-TornStaxx',icon:'WS',desc:'Ranked war · Targets · Black Skulls'
+      }}));
     });
     document.addEventListener("staxx:register",e=>{
       const d=e.detail||{},id=d.id;if(!idOk(id))return;
