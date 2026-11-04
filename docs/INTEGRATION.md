@@ -1,4 +1,4 @@
-# TornStaxx 4.0.4 · module integration contract
+# TornStaxx 4.0.5 · module integration contract
 
 Hub source: [TornStaxx.user.js](../TornStaxx.user.js). Author: IamEEKY.
 
@@ -51,3 +51,7 @@ The War loader no longer announces `staxx:register` until its main UI has mounte
 War creates a hidden `#tornstaxx-war-execution-probe` element during the loader stage and sets `data-id`, `data-version`, `data-phase` and `data-observed`; the full app updates its phase to `ready` or `error` at startup. The element carries no credentials, player data, spy values, or API responses. Unlike per-script JS globals or storage, the element is accessible to independent userscript worlds sharing the same Torn DOM.
 
 TornStaxx's `warDomEvidence()` checks the probe, complete panel markup, and native open control. A missing `staxx:register` event no longer prevents opening an existing War panel. A missing UI after a user-initiated open gives a detailed **detected version / phase / probe / panel / opener** status. If none exists, the script has not left detectable evidence in the current page; check Torn PDA injection and installation rather than assuming there is a panel-render bug. Existing key storage and gameplay data remain untouched.
+
+## Smart-quote parser safeguard
+
+Torn PDA can encounter a pre-execution parser failure if a curly apostrophe is converted into a straight ASCII apostrophe inside a single-quoted JavaScript string. War 0.2.4 contained this exact hazard and failed a reproduction with `SyntaxError: Unexpected identifier 'actual'`. War 0.2.5 eliminates the two strings and uses ASCII source with Unicode escapes for display glyphs. All five active scripts must pass automated source parsing before and after simulated quote normalization. This is separate from event delivery and panel rendering. See `SUITE-AUDIT-2026-11-04.md`.
