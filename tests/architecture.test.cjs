@@ -7,7 +7,7 @@ const src=fs.readFileSync(path.join(__dirname,'../TornStaxx.user.js'),'utf8');
 test('Torn PDA metadata is at byte zero with permanent update URLs',()=>{
   assert.ok(src.startsWith('// ==UserScript==\n'));
   assert.match(src,/^\/\/ @name\s+TornStaxx - Unified Torn Command Centre/m);
-  assert.match(src,/^\/\/ @version\s+4\.0\.4/m);
+  assert.match(src,/^\/\/ @version\s+4\.0\.5/m);
   assert.match(src,/^\/\/ @author\s+IamEEKY/m);
   assert.match(src,/^\/\/ @match\s+https:\/\/www\.torn\.com\/\*/m);
   assert.match(src,/^\/\/ @downloadURL\s+https:\/\/raw\.githubusercontent\.com\/Tom-Peters\/TornStaxx\/main\/TornStaxx\.user\.js/m);
@@ -66,7 +66,7 @@ test('War injection diagnostics check actual DOM even without shared storage or 
   assert.match(src,/getElementById\('warstaxx-dom-open'\)/);
   assert.match(src,/if\(!active\[id\]&&\!\(warEvidence\?\.detected\)\)/);
   assert.match(src,/War-TornStaxx launch check:/);
-  assert.match(src,/version 0\.2\.4/);
+  assert.match(src,/version 0\.2\.5/);
   assert.doesNotMatch(src,/Update the War module itself to v0\.2\.1/);
 });
 
@@ -77,7 +77,7 @@ test('War DOM evidence sees an injected panel even with no cross-world registrat
  assert.ok(start>0&&end>start,'Isolated DOM evidence helper exists');
  const evidenceFunction=src.slice(start,end);
  const panel={isConnected:true,style:{display:'none',visibility:'visible'},querySelector:()=>({})};
- const beacon={dataset:{phase:'ready',version:'0.2.4'}};
+ const beacon={dataset:{phase:'ready',version:'0.2.5'}};
  const control={id:'warstaxx-dom-open'};
  const registry={
    'tornstaxx-war-execution-probe':beacon,
@@ -93,7 +93,7 @@ test('War DOM evidence sees an injected panel even with no cross-world registrat
  assert.equal(result.button,true);
  assert.equal(result.ready,true);
  assert.equal(result.phase,'ready');
- assert.equal(result.version,'0.2.4');
+ assert.equal(result.version,'0.2.5');
  assert.equal(result.visible,false,'a present but closed War panel is detected without false visible state');
  delete registry['warstaxx-root'];
  delete registry['warstaxx-dom-open'];
@@ -103,4 +103,11 @@ test('War DOM evidence sees an injected panel even with no cross-world registrat
  delete registry['tornstaxx-war-execution-probe'];
  const absent=vm.runInNewContext(code,{document},{timeout:2000});
  assert.equal(absent.detected,false,'no DOM/marker means not executed');
+});
+
+
+test('War failure guidance identifies the apostrophe-parser fix and installed version',()=>{
+ assert.match(src,/smart-apostrophe parse hazards/);
+ assert.match(src,/@version 0\.2\.5/);
+ assert.doesNotMatch(src,/Update the War module itself to v0\.2\.1/);
 });
