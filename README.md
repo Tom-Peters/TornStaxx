@@ -43,3 +43,7 @@ TornStaxx is read-only with respect to gameplay. Source-specific deep links and 
 `npm test` checks the installer structure, module registry and expected event contract. CI also executes `node --check TornStaxx.user.js`. These are **source/build** checks, not live Torn PDA device verification.
 
 Repository names can be changed later; the userscript `@namespace`, `@updateURL` and `@downloadURL` values must not change until a redirect/migration is verified.
+
+## War panel launch repair — hub 4.0.3 / War 0.2.3
+
+War-TornStaxx now distinguishes a loader that started from a UI that actually finished mounting. It also exposes a hidden DOM-native open control that the hub can click when ordinary cross-script events fail in Torn PDA. This does not create another floating button or perform gameplay actions. If all launch methods fail, the hub explains whether it observed only the loader, a startup error, or a ready module without a visible panel. Update both scripts using the existing raw URLs and reload Torn. Existing local records and API-key settings are preserved. CI cannot substitute for verification in the Android WebView.
