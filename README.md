@@ -21,6 +21,8 @@ Use the **raw.githubusercontent.com** URL, not a GitHub file webpage. Keep the s
 
 **Versions at initial split:** hub 4.0.0; Profit 1.23.0; War 0.2.0; Training 0.32.0 preview; Company 1.26.0.
 
+**War connection repair:** TornStaxx **4.0.1** and War-TornStaxx **0.2.1** use an additional same-origin, identity-only runtime bridge with a short-lived local startup marker. Update both from the same permanent URLs above. No API keys, player data or gameplay actions cross this bridge. If War still reports Not running and no marker is found, Torn PDA did not execute the new module on that page.
+
 ## Architecture
 
 - **TornStaxx** owns the single S launcher, Today, Dashboard, Activity, Find, Alerts, tool navigation, action prioritisation, session fit, diagnostics, local reminder state, usage shortcuts and safe contextual assistance.
