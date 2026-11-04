@@ -47,7 +47,7 @@ test('War panel launch requires actual visible DOM and reports missing acknowled
   assert.match(src,/\.querySelector\('\.ws-panel'\)/);
   assert.match(src,/setTimeout\(\(\)=>checkWarPanelOpened\(attempt\),1100\)/);
   assert.match(src,/War panel DOM was detected, but essential UI elements were missing/);
-  assert.match(src,/No saved war data or API keys have been deleted/);
+  assert.match(src,/No saved War records or API keys have been deleted/);
 });
 
 
@@ -68,4 +68,39 @@ test('War injection diagnostics check actual DOM even without shared storage or 
   assert.match(src,/War-TornStaxx launch check:/);
   assert.match(src,/version 0\.2\.4/);
   assert.doesNotMatch(src,/Update the War module itself to v0\.2\.1/);
+});
+
+test('War DOM evidence sees an injected panel even with no cross-world registration or storage',()=>{
+ const vm=require('node:vm');
+ const start=src.indexOf('    function warDomEvidence(){');
+ const end=src.indexOf('\n    let warOpenAttempt=',start);
+ assert.ok(start>0&&end>start,'Isolated DOM evidence helper exists');
+ const evidenceFunction=src.slice(start,end);
+ const panel={isConnected:true,style:{display:'none',visibility:'visible'},querySelector:()=>({})};
+ const beacon={dataset:{phase:'ready',version:'0.2.4'}};
+ const control={id:'warstaxx-dom-open'};
+ const registry={
+   'tornstaxx-war-execution-probe':beacon,
+   'warstaxx-root':panel,
+   'warstaxx-dom-open':control
+ };
+ const document={getElementById:id=>registry[id]||null};
+ const code='function warRuntime(){return null;}\n'+evidenceFunction+'\nwarDomEvidence()';
+ const result=vm.runInNewContext(code,{document},{timeout:2000});
+ assert.equal(result.detected,true);
+ assert.equal(result.root,true);
+ assert.equal(result.probe,true);
+ assert.equal(result.button,true);
+ assert.equal(result.ready,true);
+ assert.equal(result.phase,'ready');
+ assert.equal(result.version,'0.2.4');
+ assert.equal(result.visible,false,'a present but closed War panel is detected without false visible state');
+ delete registry['warstaxx-root'];
+ delete registry['warstaxx-dom-open'];
+ const loaderOnly=vm.runInNewContext(code,{document},{timeout:2000});
+ assert.equal(loaderOnly.detected,true,'isolated execution beacon still visible');
+ assert.equal(loaderOnly.ready,false,'loader is not a completed panel');
+ delete registry['tornstaxx-war-execution-probe'];
+ const absent=vm.runInNewContext(code,{document},{timeout:2000});
+ assert.equal(absent.detected,false,'no DOM/marker means not executed');
 });
