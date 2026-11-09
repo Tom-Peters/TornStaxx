@@ -1,4 +1,4 @@
-# TornStaxx 4.0.5 · module integration contract
+# TornStaxx 4.1.0 · module integration contract
 
 Hub source: [TornStaxx.user.js](../TornStaxx.user.js). Author: IamEEKY.
 
@@ -61,3 +61,12 @@ Torn PDA can encounter a pre-execution parser failure if a curly apostrophe is c
 War automatically resolves its own faction ID via official Torn API v2 `GET /key/info` (`user.faction_id`) using the module's user-owned key. If unavailable, it tries `GET /user/faction` then `GET /user/profile`. This is a specialist War data task: the standalone TornStaxx hub never obtains, stores or forwards the Torn API key.
 
 Auto mode is the default even for upgraded settings without an existing mode flag; successful identification is saved locally with source and verification timestamp, and periodically rechecked while the page is visible. A manual fallback can be selected in War settings. A verified faction change invalidates transient live own/opponent rosters and current war context, while preserving local manual records and historical reports. All game actions remain player-controlled.
+
+
+## In-game guidance (Hub 4.1.0 / Training 0.33.0 / Company 1.30.0)
+
+Native guidance ownership: Training mounts `#staxx-training-tip` on gym/items/points and on home during a hold; Company mounts `#tch-company-owed` and employee strips. The hub skips its own matching page card while these are present. All guidance honors `staxx-hub-context-v1` for the hub and Training; Company retains its existing native staff integration. Cards stay in document flow and never intercept native scrolling or game submissions.
+
+Training owns ranked-war verification using official `GET /faction/wars` (nullable `wars.ranked`, numeric start and nullable end). No credentials or response payload are sent to the hub. During a hold it replaces actions with `war-hold`, publishes zero due notices, and labels its summary Paused. A scheduled war becomes active at its start; failed or malformed checks never clear a known hold. An expired all-clear suppresses advice after ten minutes. Successful war-end confirmation rebuilds live planning inputs before resuming. Faction-less players are verified via `GET /user/faction`.
+
+The new native employee disclosure opens explanation in place. Its full-details button retains the existing module route. The hub's page-card dismissal is session-only and resets when the action content changes.

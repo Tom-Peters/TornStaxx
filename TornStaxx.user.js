@@ -2,7 +2,7 @@
 // @name         TornStaxx - Unified Torn Command Centre
 // @namespace    https://github.com/Tom-Peters/TornStaxx
 // @homepageURL  https://github.com/Tom-Peters/TornStaxx
-// @version      4.0.5
+// @version      4.1.0
 // @description  Shared Torn PDA hub for Profit, War, Training and Company: dashboard, alerts, next actions, search, deep links and activity.
 // @author       IamEEKY
 // @match        https://www.torn.com/*
@@ -21,7 +21,7 @@
   function startHub() {
     if (document.getElementById("staxx-hub-root")) return;
     document.getElementById("staxx-fallback-root")?.remove();
-    window.__TornStaxxHubVersion = "4.0.5";
+    window.__TornStaxxHubVersion = "4.1.0";
     const root = document.createElement("div");
     root.id = "staxx-hub-root";
     root.innerHTML =
@@ -86,7 +86,7 @@
     ].join("");
     css.textContent += '#staxx-hub-drawer .staxx-context-control{display:block;width:100%;background:#0b314e;color:#8bdffc;border:1px solid #315775;border-radius:9px;padding:8px;margin:7px 0 14px;text-align:left}' +
       '#staxx-page-tip{box-sizing:border-box;display:flex;flex-wrap:wrap;gap:7px;align-items:center;background:#0c2944;color:#e9f5ff;border:1px solid #345f7d;border-left:4px solid #54d7fa;border-radius:9px;padding:10px 12px;margin:10px 0;font:13px/1.4 system-ui,Arial,sans-serif;max-width:720px;min-width:0;overflow-wrap:anywhere}' +
-      '@media (max-width:849px),(pointer:coarse){#staxx-page-tip{display:none!important}}' +
+      '#staxx-page-tip details{flex-basis:100%}#staxx-page-tip summary{cursor:pointer;color:#b9d9ef}#staxx-page-tip button{min-height:36px;touch-action:manipulation}#staxx-page-tip [data-dismiss]{margin-left:auto;background:transparent}'+
       '#staxx-page-tip strong{color:#84e0fb}#staxx-page-tip small{color:#a9cce5;flex-basis:100%}' +
       '#staxx-page-tip button{background:#0879bd;color:#fff;border:1px solid #69cef5;border-radius:8px;padding:7px 10px;font:inherit;font-weight:700;cursor:pointer}';
     css.textContent += [
@@ -356,7 +356,7 @@
         ' Detected version: '+evidence.version+'; phase: '+(evidence.phase||'not observed')+
         '; probe: '+(evidence.probe?'yes':'no')+'; panel: '+(evidence.root?'yes':'no')+
         '; DOM opener: '+(evidence.button?'yes':'no')+
-        '. Update the War module to v0.2.5 (smart-apostrophe parsing fix). If the hub is older than 4.0.5, update it too.';
+        '. Update the War module to v0.2.5 (smart-apostrophe parsing fix). If the hub is older than 4.1.0, update it too.';
       setExpanded(true);switchHubView('alerts');
       alerts.replaceChildren(node('p','staxx-empty',explanation),
         node('p','staxx-empty','No saved War records or API keys have been deleted. You can copy/share this message without exposing your settings.'));
@@ -696,53 +696,46 @@
     // Contextual, non-invasive Torn page tip. It never fills fields or performs gameplay.
     function currentContext(){
       const path=String(location.pathname||"").toLowerCase();
-      if(path==="/gym.php")return {id:"happy",name:"Gym"};
+      if(["/gym.php","/item.php","/points.php"].includes(path))return {id:"happy",name:"Training"};
+      if(path==="/factions.php")return {id:"war",name:"Faction"};
+      if(path==="/index.php"||path==="/")return {id:"home",name:"TornStaxx"};
       if(path==="/companies.php")return {id:"company",name:"Company"};
       if(path==="/page.php"&&/\bsid=itemmarket\b/i.test(String(location.search||"")))return {id:"profit",name:"Item Market"};
       if(path==="/page.php"&&/\bsid=stocks\b/i.test(String(location.search||"")))return {id:"profit",name:"Stock Market"};
       return null;
     }
     function contextEnabled(){return safeRead("staxx-hub-context-v1",true)!==false;}
+    let dismissedPageTip="";
     function renderContext(){
       const old=document.getElementById("staxx-page-tip");
       const control=root.querySelector("[data-context-toggle]");
-      if(control){control.textContent="On-page guidance: "+(contextEnabled()?"On":"Off");
-        control.setAttribute("aria-pressed",String(contextEnabled()));}
+      if(control){control.textContent="On-page guidance: "+(contextEnabled()?"On":"Off");control.setAttribute("aria-pressed",String(contextEnabled()));}
       const ctx=currentContext();
-      // TornPDA can display desktop-width pages within a narrow touch viewport.
-      // Never insert guidance into a native heading on a touch device or small layout.
-      const touch=typeof navigator!=="undefined"&&Number(navigator.maxTouchPoints)>0;
-      const coarse=typeof window.matchMedia==="function"&&window.matchMedia("(pointer: coarse)").matches;
-      const width=Math.min(Number(window.innerWidth)||9999,Number(document.documentElement.clientWidth)||9999);
-      if(!ctx||!contextEnabled()||touch||coarse||width<850||!active[ctx.id]||openPanels.size||panelOpen||expanded){
-        if(old)old.remove();return;
-      }
-      const anchor=document.querySelector?.("#gymroot h1, #mainContainer h1, .content-wrapper h1, h1");
-      const safeParent=anchor?.parentElement;
-      const parentWidth=typeof safeParent?.getBoundingClientRect==="function"?safeParent.getBoundingClientRect().width:0;
-      if(!anchor||typeof anchor.insertAdjacentElement!=="function"||parentWidth<540||anchor.closest?.("#staxx-hub-root, [role=dialog], #hhj-compact-panel")){if(old)old.remove();return;}
-      const set=actionSets[ctx.id],fresh=set&&!set.cached&&Date.now()-Number(set.updated)<(ctx.id==="company"?86400000:ctx.id==="happy"?900000:480000);
-      const ranks={urgent:5,now:4,soon:3,review:2,optional:1};
-      const items=fresh&&Array.isArray(set.items)?set.items.slice().sort((a,b)=>(ranks[b.status]||0)-(ranks[a.status]||0)||(b.priority||0)-(a.priority||0)):[];
-      // Stale/missing data triggers automatic refresh inside each tool; never cover Torn
-      // with a large "refresh" prompt or present cached recommendations as live.
-      const first=items.find(x=>!/^((refresh|recheck|scan)(-|$))/i.test(String(x.id||"")));
-      if(!first){if(old)old.remove();return;}
-      const title=first.title;
-      const detail=first.detail||"";
-      // Reuse existing element to avoid mutating Torn's DOM during every heartbeat.
-      const fingerprint=ctx.id+"|"+title+"|"+detail+"|"+String(first?.id||"");
-      if(old&&old.dataset.fingerprint===fingerprint&&old.previousElementSibling===anchor)return;
-      if(old)old.remove();
-      const bar=node("div");bar.id="staxx-page-tip";bar.dataset.fingerprint=fingerprint;
-      bar.setAttribute("role","region");bar.setAttribute("aria-label","Staxx contextual guidance");
-      const heading=node("strong","",ctx.name+" · NEXT ACTION");
-      const message=node("span","",title),sub=node("small","",detail);
-      const button=node("button","","Review action ›");
-      button.type="button";button.addEventListener("click",()=>openTool(ctx.id,first.id));
-      bar.append(heading,message,button,sub);
-      anchor.insertAdjacentElement("afterend",bar);
+      const native=ctx?.id==="company"&&document.getElementById("tch-company-owed")||
+        ["happy","home"].includes(ctx?.id)&&document.getElementById("staxx-training-tip");
+      if(!ctx||native||!contextEnabled()||openPanels.size||panelOpen||expanded){old?.remove();return;}
+      const first=pendingActions().find(x=>!x.cached&&active[x.owner]&&(ctx.id==="home"||x.owner===ctx.id)&&
+        !/^(refresh|recheck|scan)(-|$)/i.test(x.id));
+      if(!first){old?.remove();return;}
+      const host=document.querySelector?.("#mainContainer, .content-wrapper, #mainContent, main");
+      if(!host||typeof host.prepend!=="function"||host.closest?.("#staxx-hub-root, [role=dialog]")){old?.remove();return;}
+      const fingerprint=location.pathname+"|"+first.owner+"|"+first.id+"|"+first.title+"|"+first.detail;
+      if(fingerprint===dismissedPageTip){old?.remove();return;}
+      if(old&&old.dataset.fingerprint===fingerprint&&old.parentElement===host)return;
+      old?.remove();
+      const bar=node("section");bar.id="staxx-page-tip";bar.dataset.fingerprint=fingerprint;
+      bar.setAttribute("aria-label","Staxx page guidance");
+      const heading=node("strong","",ctx.name),message=node("span","",first.title);
+      const button=node("button","","Review");button.type="button";
+      button.addEventListener("click",()=>openTool(first.owner,first.id));
+      const dismiss=node("button","","Hide");dismiss.type="button";dismiss.dataset.dismiss="1";
+      dismiss.setAttribute("aria-label","Hide this advice for this page session");
+      dismiss.addEventListener("click",()=>{dismissedPageTip=fingerprint;bar.remove();});
+      bar.append(heading,message,button,dismiss);
+      if(first.detail){const detail=node("details"),label=node("summary","","Why this matters");detail.append(label,node("small","",first.detail));bar.append(detail);}
+      host.prepend(bar);
     }
+
     function renderWelcome(){
       const host=root.querySelector('#staxx-hub-welcome');if(!host)return;
       const done=safeRead('staxx-hub-onboarded-v1',false)===true;

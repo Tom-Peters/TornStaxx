@@ -1,3 +1,9 @@
+## 4.1.0 - In-game guidance
+
+Context guidance now works on touch devices in a normal content block, without inserting into native headings. One fresh relevant action is shown, with an expandable explanation and session dismissal. Native Training and Company guidance takes precedence to prevent duplication. Home and faction pages now have context routes. No API keys or remote reads are added to the hub.
+
+Validation: automated regression and parser checks; live Torn PDA validation remains a device check.
+
 # TornStaxx · Unified Torn Command Centre
 
 **TornStaxx** is the fifth Torn PDA script, and the dedicated shared user interface for four specialist tools. **Author: IamEEKY.**
