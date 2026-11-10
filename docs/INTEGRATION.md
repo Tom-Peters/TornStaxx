@@ -86,3 +86,14 @@ Each specialist has a main workspace and narrowly scoped native extensions. Navi
 Missing anchors mean no injection, never a fallback to body or the top of a general page. Native helpers must leave when their item/page context changes, use normal document flow, and preserve native game controls. Workspace disclosure state and typed inputs must survive same-screen background refresh. Reuse existing deep links and stable tool IDs. Do not present API estimates as realised results.
 
 Regression scenarios exercised: Tools-first hub opening without a native card; gym-only Training placement with an active-war hold; Company roster placement and employee disclosure with refresh; Profit primary navigation and exact-item buy-field assistance, manual quantity preparation and cleanup on route change. No live account or private data is used.
+
+
+## Native action details (Hub 4.3.0)
+
+- Company: employee pay/trains/fit are independent disclosures, keyed by the native numeric employee ID. Ledger records keep confirmation labels and do not prove actions beyond their source.
+- Training: per-train estimates use the current gym/stat/happiness model. A separate visible Torn result is observational evidence and excludes text from the helper itself. Ranked-war holds still suppress training suggestions.
+- Profit: exact ItemMarket item ID plus one visible buy quantity input are required for saved quote details. No matching saved quote means no panel. Stale quotes have no qualifying buy suggestion. This passive helper never changes inputs.
+- War: `/profiles.php?XID=...` must identify a known own/enemy roster player and contain an exact same-origin attack link for that ID. Missing match means no injection. Roster freshness and strength provenance remain explicit.
+- Hub: native workspace visits capture their originating control, then restore focus without scrolling on close. No API data or credentials are added to events.
+
+DOM scenarios checked with synthetic fixtures: distinct company disclosures and refresh persistence; passive quote/no quantity mutation and item-route cleanup; known/unknown profile matching and stale labelling; visible gym results during a war hold. Actual Torn PDA visual rendering remains a separate device check.

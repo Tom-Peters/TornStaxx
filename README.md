@@ -1,3 +1,7 @@
+## 4.3.0 - Native action details
+
+Returns keyboard focus to the native control after closing a workspace, including controls rebuilt while the workspace was open. No generic banners or new API reads.
+
 ## 4.2.0 - Workspace and native-page separation
 
 The hub now opens on Tools. Today prioritises next actions and moves session controls, provenance and updates into disclosures. The hub never injects generic advice into Torn content; specialist modules own native extensions.

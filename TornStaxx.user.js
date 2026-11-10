@@ -2,7 +2,7 @@
 // @name         TornStaxx - Unified Torn Command Centre
 // @namespace    https://github.com/Tom-Peters/TornStaxx
 // @homepageURL  https://github.com/Tom-Peters/TornStaxx
-// @version      4.2.0
+// @version      4.3.0
 // @description  Shared Torn PDA hub for Profit, War, Training and Company: dashboard, alerts, next actions, search, deep links and activity.
 // @author       IamEEKY
 // @match        https://www.torn.com/*
@@ -21,7 +21,7 @@
   function startHub() {
     if (document.getElementById("staxx-hub-root")) return;
     document.getElementById("staxx-fallback-root")?.remove();
-    window.__TornStaxxHubVersion = "4.2.0";
+    window.__TornStaxxHubVersion = "4.3.0";
     const root = document.createElement("div");
     root.id = "staxx-hub-root";
     root.innerHTML =
@@ -356,7 +356,7 @@
         ' Detected version: '+evidence.version+'; phase: '+(evidence.phase||'not observed')+
         '; probe: '+(evidence.probe?'yes':'no')+'; panel: '+(evidence.root?'yes':'no')+
         '; DOM opener: '+(evidence.button?'yes':'no')+
-        '. Update the War module to v0.2.5 (smart-apostrophe parsing fix). If the hub is older than 4.2.0, update it too.';
+        '. Update the War module to v0.2.5 (smart-apostrophe parsing fix). If the hub is older than 4.3.0, update it too.';
       setExpanded(true);switchHubView('alerts');
       alerts.replaceChildren(node('p','staxx-empty',explanation),
         node('p','staxx-empty','No saved War records or API keys have been deleted. You can copy/share this message without exposing your settings.'));
@@ -1142,10 +1142,19 @@
     }
     toggle.addEventListener("pointerup",endMove);toggle.addEventListener("pointercancel",endMove);
     window.addEventListener("resize",()=>position(safeRead("staxx-hub-position-v2",0.43)));
+    let nativeReturnTarget=null;
+    document.addEventListener('click',e=>{
+      const target=e.target?.closest?.('#staxx-training-tip button,.tch-staff-intel button,#tch-company-owed button,#warstaxx-profile-detail button,#ps-native-quote button');
+      if(target)nativeReturnTarget={element:target,attributes:Array.from(target.attributes).filter(a=>a.name.startsWith("data-")).map(a=>[a.name,a.value]),scope:target.closest("#staxx-training-tip,.tch-staff-intel,#tch-company-owed,#warstaxx-profile-detail,#ps-native-quote")};
+    },true);
     document.addEventListener("staxx:panel",e=>{
       if(!e.detail||!idOk(e.detail.id))return;
       if(e.detail.open){openPanels.add(e.detail.id);panelOpen=true;setExpanded(false);}
-      else{openPanels.delete(e.detail.id);panelOpen=openPanels.size>0;launcherVisibility();}
+      else{openPanels.delete(e.detail.id);panelOpen=openPanels.size>0;launcherVisibility();if(!panelOpen&&nativeReturnTarget){const saved=nativeReturnTarget;nativeReturnTarget=null;setTimeout(()=>{
+        const scope=saved.scope?.isConnected?saved.scope:saved.scope?.id?document.getElementById(saved.scope.id):null;
+        const target=saved.element?.isConnected?saved.element:Array.from(scope?.querySelectorAll("button")||[]).find(b=>saved.attributes.every(([name,value])=>b.getAttribute(name)===value));
+        target?.focus?.({preventScroll:true});
+      },0);}}
       renderContext();
     });
     document.addEventListener('staxx:mode',e=>{const m=e.detail?.mode;if((m==='simple'||m==='advanced')&&m!==uiMode){uiMode=m;saveLocal('staxx-hub-mode-v1',m);expandedTaskList=false;render();}});
