@@ -70,3 +70,19 @@ Native guidance ownership: Training mounts `#staxx-training-tip` on gym/items/po
 Training owns ranked-war verification using official `GET /faction/wars` (nullable `wars.ranked`, numeric start and nullable end). No credentials or response payload are sent to the hub. During a hold it replaces actions with `war-hold`, publishes zero due notices, and labels its summary Paused. A scheduled war becomes active at its start; failed or malformed checks never clear a known hold. An expired all-clear suppresses advice after ten minutes. Successful war-end confirmation rebuilds live planning inputs before resuming. Faction-less players are verified via `GET /user/faction`.
 
 The new native employee disclosure opens explanation in place. Its full-details button retains the existing module route. The hub's page-card dismissal is session-only and resets when the action content changes.
+
+
+## Workspace / native-page contract (4.2.0, supersedes generic guidance)
+
+Each specialist has a main workspace and narrowly scoped native extensions. Navigation, detailed comparisons, configuration and history belong in the workspace. The hub provides tool switching and cross-tool review only; it must not add a general next-action banner to the game.
+
+| Tool | Workspace | Native extension | Required context |
+|---|---|---|---|
+| Training | Today, Schedule, Progress; Improve/Manage directory | Stat focus, energy/happy, next decision or war hold | `/gym.php` and `#gymroot` |
+| Company | Today, Staff, Trains, Growth; secondary tools | Roster queue and employee-specific pay/train/fit explanations | Company page with `ul.employee-list`; numeric matching employee IDs |
+| Profit | Today, Deals, Stocks, Ledger; research directory | Requested quantity preparation beside buy input | Matching item ID, unexpired user intent, one visible unambiguous buy field |
+| War | Next step, Players, grouped reports | Player intelligence and relevant war controls | Ranked-war lists, faction context, or explicit war-item intent; never attack pages |
+
+Missing anchors mean no injection, never a fallback to body or the top of a general page. Native helpers must leave when their item/page context changes, use normal document flow, and preserve native game controls. Workspace disclosure state and typed inputs must survive same-screen background refresh. Reuse existing deep links and stable tool IDs. Do not present API estimates as realised results.
+
+Regression scenarios exercised: Tools-first hub opening without a native card; gym-only Training placement with an active-war hold; Company roster placement and employee disclosure with refresh; Profit primary navigation and exact-item buy-field assistance, manual quantity preparation and cleanup on route change. No live account or private data is used.

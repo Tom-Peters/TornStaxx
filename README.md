@@ -1,3 +1,9 @@
+## 4.2.0 - Workspace and native-page separation
+
+The hub now opens on Tools. Today prioritises next actions and moves session controls, provenance and updates into disclosures. The hub never injects generic advice into Torn content; specialist modules own native extensions.
+
+Validated with existing regression suites, parser checks and DOM integration scenarios. Live Torn PDA visual/device validation remains separate.
+
 ## 4.1.0 - In-game guidance
 
 Context guidance now works on touch devices in a normal content block, without inserting into native headings. One fresh relevant action is shown, with an expandable explanation and session dismissal. Native Training and Company guidance takes precedence to prevent duplication. Home and faction pages now have context routes. No API keys or remote reads are added to the hub.
