@@ -2,7 +2,7 @@
 // @name         TornStaxx - Unified Torn Command Centre
 // @namespace    https://github.com/Tom-Peters/TornStaxx
 // @homepageURL  https://github.com/Tom-Peters/TornStaxx
-// @version      4.3.0
+// @version      4.4.0
 // @description  Shared Torn PDA hub for Profit, War, Training and Company: dashboard, alerts, next actions, search, deep links and activity.
 // @author       IamEEKY
 // @match        https://www.torn.com/*
@@ -21,7 +21,7 @@
   function startHub() {
     if (document.getElementById("staxx-hub-root")) return;
     document.getElementById("staxx-fallback-root")?.remove();
-    window.__TornStaxxHubVersion = "4.3.0";
+    window.__TornStaxxHubVersion = "4.4.0";
     const root = document.createElement("div");
     root.id = "staxx-hub-root";
     root.innerHTML =
@@ -32,7 +32,7 @@
       '<nav class="staxx-main-tabs" aria-label="TornStaxx sections"><button type="button" data-hub-view="today" aria-pressed="true">Today</button><button type="button" data-hub-view="dashboard" aria-pressed="false">Dashboard</button><button type="button" data-hub-view="activity" aria-pressed="false">Activity</button><button type="button" data-hub-view="tools" aria-pressed="false">Tools</button><button type="button" data-hub-view="alerts" aria-pressed="false">Alerts</button><button type="button" data-hub-view="more" aria-pressed="false">More</button></nav>' +
       '<section id="staxx-hub-find" aria-label="Find Staxx tools and actions" hidden><label for="staxx-hub-find-input">FIND TOOLS, ACTIONS &amp; ALERTS</label><input id="staxx-hub-find-input" type="search" maxlength="100" autocomplete="off" spellcheck="false" placeholder="e.g. trains, stocks, gym" aria-controls="staxx-hub-find-results"><p id="staxx-hub-find-status" role="status" aria-live="polite"></p><div id="staxx-hub-find-results" role="group" aria-label="Search results"></div></section>' +
       '<div class="staxx-scroll">' +
-      '<section data-hub-section="today"><section id="staxx-hub-welcome" hidden></section><section id="staxx-hub-best" aria-label="Next review"></section><div id="staxx-hub-task-filters" role="group" aria-label="Filter actions"></div><section id="staxx-hub-tasks" aria-label="Next steps"></section><details><summary>Updates and upcoming actions</summary><section id="staxx-hub-early"></section><section id="staxx-hub-changes"></section></details><details><summary>Session and checklist</summary><section id="staxx-hub-session"></section><section id="staxx-hub-checklist"></section></details><details><summary>Sources and shortcuts</summary><section id="staxx-hub-source-status"></section><section id="staxx-hub-page-shortcut"></section><div id="staxx-hub-frequent"></div><div id="staxx-hub-quick-tools"></div></details></section>' +
+      '<section data-hub-section="today"><section id="staxx-hub-welcome" hidden></section><section id="staxx-hub-best" aria-label="Next review"></section><section id="staxx-hub-pins" aria-label="Pinned sections" hidden></section><div id="staxx-hub-task-filters" role="group" aria-label="Filter actions"></div><section id="staxx-hub-tasks" aria-label="Next steps"></section><details><summary>Updates and upcoming actions</summary><section id="staxx-hub-early"></section><section id="staxx-hub-changes"></section></details><details><summary>Session and checklist</summary><section id="staxx-hub-session"></section><section id="staxx-hub-checklist"></section></details><details><summary>Sources and shortcuts</summary><section id="staxx-hub-source-status"></section><section id="staxx-hub-page-shortcut"></section><div id="staxx-hub-frequent"></div><div id="staxx-hub-quick-tools"></div></details></section>' +
       '<section data-hub-section="dashboard" hidden><div class="staxx-label"><h3>SUITE DASHBOARD</h3><span>All Staxx helpers</span></div><section id="staxx-hub-daily" aria-label="Daily evidence report"></section><section id="staxx-hub-dashboard"></section></section>' +
       '<section data-hub-section="activity" hidden><div class="staxx-label"><h3>RECENT ACTIVITY</h3><button type="button" data-activity-clear>Clear history</button></div><section id="staxx-hub-activity"></section></section>' +
       '<section data-hub-section="tools" hidden><div class="staxx-label"><h3>YOUR TOOLS</h3><button type="button" data-arrange aria-pressed="false">Reorder</button></div><div id="staxx-hub-tools"></div></section>' +
@@ -130,6 +130,9 @@
       '#staxx-hub-drawer #staxx-hub-dashboard dl{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}',
       '#staxx-hub-drawer #staxx-hub-dashboard dt{font-size:10px;color:#a9c4d7}',
       '#staxx-hub-drawer #staxx-hub-dashboard dd{font-size:13px;font-weight:800;margin:2px 0;overflow-wrap:anywhere}',
+      '#staxx-hub-drawer .staxx-find-row,#staxx-hub-drawer .staxx-pin-row{display:flex;align-items:center;gap:6px;margin:4px 0}',
+      '#staxx-hub-drawer .staxx-find-row .staxx-find-item,#staxx-hub-drawer .staxx-pin-open{flex:1;min-width:0;text-align:left}',
+      '#staxx-hub-drawer .staxx-pin-toggle{flex:none;min-height:44px;padding:6px 10px;border:1px solid #386788;border-radius:8px}',
       '#staxx-hub-drawer #staxx-hub-frequent{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}',
       '#staxx-hub-drawer #staxx-hub-frequent button{padding:10px 8px;min-height:48px;background:#102d49;border:1px solid #386788;border-radius:9px;text-align:left;font-size:11px;font-weight:800}',
       '#staxx-hub-drawer #staxx-hub-frequent small{display:block;margin-top:3px;font-size:10px;color:#96c2d9}',
@@ -595,6 +598,39 @@
       }
       return rows;
     }
+    const pinKey='staxx-hub-pinned-sections-v1';
+    const storedPins=safeRead(pinKey,[]);
+    let pins=Array.isArray(storedPins)?storedPins.filter(x=>x&&idOk(x.owner)&&idOk(x.section)).slice(0,6):[];
+    function pinRoute(owner,section){
+      const entry=entries.find(e=>e.id===owner);
+      const route=(sectionsByTool[owner]||entry?.sections||[]).find(r=>r[0]===section);
+      return entry&&route?{entry,title:route[1]}:null;
+    }
+    function pinButton(owner,section,isPinned,title){
+      const button=node('button','staxx-pin-toggle',isPinned?'Unpin':'Pin');
+      button.type='button';button.dataset.pinTool=owner;button.dataset.pinSection=section;
+      button.setAttribute('aria-label',(isPinned?'Unpin ':'Pin ')+title);
+      if(!isPinned&&pins.length>=6){button.disabled=true;button.title='Unpin a section to make room';}
+      return button;
+    }
+    function renderPins(){
+      const host=root.querySelector('#staxx-hub-pins');if(!host)return;
+      const focused=host.contains(document.activeElement)?document.activeElement:null;
+      host.replaceChildren();
+      for(const {owner,section} of pins){
+        const route=pinRoute(owner,section);if(!route)continue;
+        const row=node('div','staxx-pin-row'),open=node('button','staxx-pin-open',route.title+' · '+route.entry.label);
+        open.type='button';open.dataset.hubSectionTool=owner;open.dataset.hubSectionTab=section;
+        open.disabled=!active[owner]&&!(owner==='war'&&warDomEvidence().ready);
+        if(open.disabled)open.title='Script not active';
+        const unpin=pinButton(owner,section,true,route.title);
+        row.append(open,unpin);host.append(row);
+        if(focused?.dataset.pinTool===owner&&focused.dataset.pinSection===section)unpin.focus({preventScroll:true});
+        if(focused?.dataset.hubSectionTool===owner&&focused.dataset.hubSectionTab===section)open.focus({preventScroll:true});
+      }
+      host.hidden=!host.children.length;
+      if(!host.hidden)host.prepend(node('h3','','Pinned sections'));
+    }
     function renderFind(){
       if(!findOpen||!findResults||!findInput)return;
       findResults.replaceChildren();
@@ -621,7 +657,11 @@
         if(!item.available&&item.owner!=='company'){btn.disabled=true;btn.title='Enable '+item.owner+' in TornPDA first';}
         const type=item.kind==='action'?'Action':item.kind==='alert'?'Alert':item.kind==='section'?'Section':'Tool';
         btn.append(node('b','',item.title),node('small','',type+' · '+item.detail+(btn.disabled?' · Script not active':'')));
-        findResults.append(btn);
+        if(item.kind==='section'){
+          const pinned=pins.some(x=>x.owner===item.owner&&x.section===item.section);
+          const row=node('div','staxx-find-row');
+          row.append(btn,pinButton(item.owner,item.section,pinned,item.title));findResults.append(row);
+        }else findResults.append(btn);
       }
       if(!results.length)findResults.append(node('p','staxx-empty','No matching active tool data. Try a shorter term or open a helper to refresh.'));
     }
@@ -951,7 +991,7 @@
       if(rows.length>6&&(expandedTaskList||uiMode==='advanced'))taskList.append(node("p","staxx-foot",String(rows.length-6)+" further recommendations inside your tools"));
     }
     function render(){
-      renderWelcome();
+      renderWelcome();renderPins();
       const modeButton=root.querySelector('[data-hub-mode]');if(modeButton)modeButton.textContent='Display: '+(uiMode==='simple'?'Simple':'Advanced')+' · change';
       tools.replaceChildren();alerts.replaceChildren();
       const quick=root.querySelector("#staxx-hub-quick-tools");
@@ -1033,6 +1073,19 @@
     }
     root.addEventListener("click",e=>{
       const b=e.target.closest("button");if(!b)return;
+      if(b.dataset.pinTool){
+        const owner=b.dataset.pinTool,section=b.dataset.pinSection;
+        const route=pinRoute(owner,section);if(!route)return;
+        const pinned=pins.some(x=>x.owner===owner&&x.section===section);
+        if(pinned)pins=pins.filter(x=>x.owner!==owner||x.section!==section);
+        else if(pins.length<6)pins=[...pins,{owner,section}];
+        saveLocal(pinKey,pins);renderPins();renderFind();
+        if(findOpen){
+          const replacement=[...findResults.querySelectorAll('[data-pin-tool]')].find(x=>x.dataset.pinTool===owner&&x.dataset.pinSection===section);
+          replacement?.focus({preventScroll:true});
+        }
+        return;
+      }
       if(b.dataset.hubView){setFindOpen(false);switchHubView(b.dataset.hubView);return;}
       if(b.dataset.sessionMinutes!==undefined){
         const minutes=Number(b.dataset.sessionMinutes);
@@ -1106,7 +1159,7 @@
     findInput?.addEventListener?.('input',renderFind);
     findInput?.addEventListener?.('keydown',e=>{
       if(e.key==='Enter'){
-        const first=findResults?.querySelector?.('button:not(:disabled)');
+        const first=findResults?.querySelector?.('.staxx-find-item:not(:disabled)');
         if(first){e.preventDefault?.();first.click();}
       }
     });

@@ -1,3 +1,7 @@
+## 4.4.0
+
+Pin up to six sections from Find and open them directly from Today.
+
 ## 4.3.0 - Native action details
 
 Returns keyboard focus to the native control after closing a workspace, including controls rebuilt while the workspace was open. No generic banners or new API reads.

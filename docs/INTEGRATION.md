@@ -97,3 +97,7 @@ Regression scenarios exercised: Tools-first hub opening without a native card; g
 - Hub: native workspace visits capture their originating control, then restore focus without scrolling on close. No API data or credentials are added to events.
 
 DOM scenarios checked with synthetic fixtures: distinct company disclosures and refresh persistence; passive quote/no quantity mutation and item-route cleanup; known/unknown profile matching and stale labelling; visible gym results during a war hold. Actual Torn PDA visual rendering remains a separate device check.
+
+## Pinned sections in Hub 4.4
+
+Find can pin up to six registered or built-in tool sections to Today. Pins store only tool and section identifiers locally. Opening a pin uses the existing `staxx:open` section route and the same panel focus handling as Find. A pin stays visible if its module is unavailable and can still be removed.
