@@ -1,3 +1,7 @@
+## 4.5.0 - Achievements and merit goals
+
+New Achievements tab and Today/Dashboard shortcuts: browse honors and medals, filter by category, sort supported counters by progress, save award goals, review recent unlocks, and plan merit upgrades with incremental cost and available balance. Update Training-TornStaxx preview to 0.39.4 or later as well; it provides read-only achievement data using its existing PDA key. Unsupported counters remain unknown. No gameplay actions or automatic merit spending. Live account validation remains a device check.
+
 ## 4.4.0
 
 Pin up to six sections from Find and open them directly from Today.
