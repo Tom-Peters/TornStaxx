@@ -1,3 +1,7 @@
+## 4.6.2 - One-off merit opportunities
+
+Additional documented one-off opportunities, calendar awards on the correct Torn day, and a level-10 merit opportunity only when it matches an affordable saved goal. No automatic spending.
+
 ## 4.6.1 - Easiest merits
 
 Find quick actions and threshold-ready awards without requiring historical pace; show reasons and next actions, filter for saving energy or spending, diversify recommendations, and keep war priority. Update Training main 0.40.1 for expanded counters.

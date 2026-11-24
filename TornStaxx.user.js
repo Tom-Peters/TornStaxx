@@ -2,7 +2,7 @@
 // @name         TornStaxx - Unified Torn Command Centre
 // @namespace    https://github.com/Tom-Peters/TornStaxx
 // @homepageURL  https://github.com/Tom-Peters/TornStaxx
-// @version      4.6.1
+// @version      4.6.2
 // @description  Shared Torn PDA hub for Profit, War, Training and Company: dashboard, alerts, next actions, search, deep links and activity.
 // @author       IamEEKY
 // @match        https://www.torn.com/*
@@ -21,7 +21,7 @@
   function startHub() {
     if (document.getElementById("staxx-hub-root")) return;
     document.getElementById("staxx-fallback-root")?.remove();
-    window.__TornStaxxHubVersion = "4.6.1";
+    window.__TornStaxxHubVersion = "4.6.2";
     const root = document.createElement("div");
     root.id = "staxx-hub-root";
     root.innerHTML =
@@ -274,15 +274,35 @@
       return result.sort((a,b)=>Number(a.completed)-Number(b.completed)||(b.progress?.percent??-1)-(a.progress?.percent??-1)||a.name.localeCompare(b.name));
     }
 
-    function easyAwardCandidate(x,hold,mode){
+    function easyAwardCandidate(x,hold,mode,context={}){
       if(x.completed)return null;
       const n=String(x.name||"").toLowerCase(),d=String(x.description||"").trim().replace(/\.$/,""),p=x.progress,plan=x.plan||{};
-      const make=(tier,score,reason,action,energy,nerve,money,minutes,confidence)=>({tier,score,reason,action,energy,nerve,money,minutes,confidence});
+      const make=(tier,score,reason,action,energy,nerve,money,minutes,confidence,group=null)=>({tier,score,reason,action,energy,nerve,money,minutes,confidence,group});
       if(p&&p.remaining===0)return make("Check unlock",0,"Counter already meets the requirement","Open Awards and check whether a qualifying action is needed. Do not repeat a costly action just to trigger an award.",null,null,null,2,"Counter verified; award not earned");
       if(x.kind==="honors"&&n==="historian"&&/^read a chronicle$/i.test(d))
         return make("Quick win",1,"No energy, nerve or item cost","Open the Newspaper, choose Chronicles and read a chronicle. The time required can vary; refresh after Torn grants the award.",0,0,0,null,"Documented action; duration uncertain");
       if(x.kind==="honors"&&n==="lavish"&&/^dump an item with a current market value of at least \$1,000,000$/i.test(d)&&!hold&&mode==="balanced")
         return make("One-off",8,"One item disposal; minimum item value $1m","Only if willing to lose an item worth at least $1m, verify current market value in Torn and manually trash it.",0,0,1000000,5,"Minimum sacrificed value, not live price");
+      if(x.kind==="honors"){
+        const day=context.now instanceof Date?context.now:new Date(Number.isFinite(context.now)?context.now:Date.now());
+        const dates={"christmas in torn":[12,25,"christmas day"],"trick or treat":[10,31,"halloween"],"torniversary":[11,15,"november 15th"],"tornication":[2,14,"valentine's day"],"resolution":[1,1,"new year's day"]};
+        const date=dates[n];
+        if(date&&day.getUTCMonth()+1===date[0]&&day.getUTCDate()===date[1]&&d.toLowerCase()==="login on "+date[2])
+          return make("Today only",0.5,"Free date-specific award is available today (Torn time)","Log in normally today and refresh Awards to confirm the honor.",0,0,0,1,"Calendar requirement; award pending");
+        if((n==="pious"||n==="saintly")&&/^donate a total of \$(100,000|1,000,000) to the church$/i.test(d)&&!hold){
+          const amount=n==="pious"?100000:1000000;
+          if((n==="pious"&&/100,000/.test(d)&&!/1,000,000/.test(d))||(n==="saintly"&&/1,000,000/.test(d))){
+            if(mode!=="save-money"||amount<=100000)return make("One-off",3+amount/150000,"Cumulative donation target; up to $"+amount.toLocaleString("en-GB"),"Review prior Church donations in Torn before donating only the remaining amount. Do not donate if you are saving cash.",0,0,amount,5,"Upper-bound spend; past donations unknown","church");
+          }
+        }
+        if(n==="double dragon"&&/^assist in a single attack$/i.test(d)&&!hold&&mode==="balanced")
+          return make("One-off",7,"One qualifying attack assist","Arrange a suitable in-game group attack and assist. Confirm eligibility; unsuccessful attempts may require more energy.",25,0,null,null,"Standard attack energy; outcome not guaranteed","attacksassisted");
+        if(n==="10-stack"&&/^increase a merit upgrade to its maximum$/i.test(d)&&!hold&&mode==="balanced"&&Number.isSafeInteger(context.balance)){
+          const choices=(Array.isArray(context.upgrades)?context.upgrades:[]).filter(u=>Number.isInteger(u.level)&&u.level>=0&&u.level<=10&&context.goals?.[u.id]===10).map(u=>({u,cost:(110-u.level*(u.level+1))/2})).sort((a,b)=>a.cost-b.cost);
+          const best=choices[0];
+          if(best&&best.cost<=context.balance&&best.cost>0)return make("Planned upgrade",5+best.cost/2,"A saved level-10 goal is affordable: "+best.cost+" merits","Review your existing "+best.u.name+" goal in the merit planner; only spend if still appropriate for your playstyle.",0,0,0,2,"Known balance and saved upgrade goal","merit-upgrade");
+        }
+      }
       if(!p||p.remaining<=0||!Number.isFinite(p.remaining)||!Number.isFinite(p.percent))return null;
       if(hold&&["happy","profit","war"].includes(plan.tool))return null;
       if(hold&&(!plan.tool||plan.tool==="general")&&(!Number.isFinite(plan.energy)||plan.energy!==0||!Number.isFinite(plan.nerve)||plan.nerve!==0))return null;
@@ -299,12 +319,12 @@
       const tier=remaining<=5?"Near finish":historical&&plan.days<=7?"This week":"Steady progress";
       return make(tier,score,remaining+" remaining"+(historical?" | ~"+plan.days+" days at observed pace":" | no reliable pace"),action,energy,nerve,money,null,historical?"Historical estimate":"Action count verified; time unknown");
     }
-    function rankAchievementPlans(rows,hold,mode="balanced"){
-      const candidates=rows.map(x=>({x,easy:easyAwardCandidate(x,hold,mode)})).filter(x=>x.easy);
+    function rankAchievementPlans(rows,hold,mode="balanced",context={}){
+      const candidates=rows.map(x=>({x,easy:easyAwardCandidate(x,hold,mode,context)})).filter(x=>x.easy);
       candidates.sort((a,b)=>a.easy.score-b.easy.score||(b.x.progress?.percent??0)-(a.x.progress?.percent??0)||a.x.name.localeCompare(b.x.name));
       const selected=[],seen=new Set(),deferred=[];
       for(const c of candidates){
-        const k=c.x.plan?.counter||c.x.key||c.x.name;
+        const k=c.easy.group||c.x.plan?.counter||c.x.key||c.x.name;
         if(seen.has(k)){deferred.push(c);continue;}
         seen.add(k);selected.push(c);
         if(selected.length===5)break;
@@ -356,7 +376,7 @@
     function renderAchievementToday(){
       const host=root.querySelector("#staxx-ach-today");if(!host)return;host.replaceChildren();
       if(!achievementFresh())return;
-      const d=achievementData,top=rankAchievementPlans(d.rows,d.warHold,easyMode).slice(0,1);
+      const d=achievementData,top=rankAchievementPlans(d.rows,d.warHold,easyMode,{balance:d.merits?.available,upgrades:d.upgrades,goals:meritGoals}).slice(0,1);
       if(!top.length)return;
       const a=node("article","staxx-overview-card");a.append(node("b","","Merit opportunity"),node("p","",top[0].name+" | "+top[0].easy.reason));
       const b=node("button","staxx-overview-switch","Review easiest merits");b.type="button";b.dataset.hubView="achievements";a.append(b);host.append(a);
@@ -418,7 +438,7 @@
         if(!chosen.length)results.append(node("p","staxx-empty","No matching upgrade data."));
         return;
       }
-      const rows=filter.value==="recommended"?achievementFresh()?rankAchievementPlans(selectAchievementRows(d.rows,"all",query,category.value,achievementGoals),d.warHold,easyMode):[]:selectAchievementRows(d.rows,filter.value,query,category.value,achievementGoals);
+      const rows=filter.value==="recommended"?achievementFresh()?rankAchievementPlans(selectAchievementRows(d.rows,"all",query,category.value,achievementGoals),d.warHold,easyMode,{balance:d.merits?.available,upgrades:d.upgrades,goals:meritGoals}):[]:selectAchievementRows(d.rows,filter.value,query,category.value,achievementGoals);
       const modeControl=root.querySelector("#staxx-ach-easy-mode");if(modeControl)modeControl.value=easyMode;
       if(filter.value==="recommended")results.append(node("p","staxx-trendnote","Up to five actionable unearned awards: check unlocks, one-off actions, near finishes and observed forecasts. Unknown time or costs stay unknown. Similar counter goals are grouped where possible; war holds take priority."));
       results.append(node("p","staxx-trendnote",rows.length+" matching awards. Progress uses supported personal-stat counters, not a Torn eligibility guarantee."));
@@ -429,8 +449,8 @@
         else if(x.progress){
           const p=x.progress,bar=node("progress");bar.max=100;bar.value=p.percent;bar.setAttribute("aria-label",x.name+" progress");a.append(bar,node("p","",achFmt(p.current)+" / "+achFmt(p.target)+" | "+p.percent.toFixed(1)+"%"),node("small","",p.remaining===0?"Threshold reached; awaiting Torn award confirmation.":achFmt(p.remaining)+" remaining"));
         }else a.append(node("small","staxx-trendnote","Progress unavailable; check requirements in Torn."));
-        if(x.easy){const e=x.easy;a.append(node("b","",e.tier),node("p","",e.reason),node("p","",e.action),node("small","staxx-trendnote",e.confidence),node("p","","E: "+(e.energy===null?"unknown":achFmt(e.energy))+" | N: "+(e.nerve===null?"unknown":achFmt(e.nerve))+" | $: "+(e.money===null?"unknown":achFmt(e.money))));}
-        if(!x.completed){const detail=node("details");detail.append(node("summary","","Resource estimates and forecast"),node("p","",achievementPlanText(x)),node("p","",x.plan?.eta?"Estimated "+new Date(x.plan.eta).toLocaleDateString("en-GB")+" at "+x.plan.rate.toFixed(2)+"/day over "+Math.round(x.plan.historyDays)+" days.":"Completion date unknown; insufficient positive history."),node("small","staxx-trendnote",x.plan?.note||"No supported cost model."));a.append(detail);}
+        if(x.easy){const e=x.easy;a.append(node("b","",e.tier),node("p","",e.reason),node("p","",e.action),node("small","staxx-trendnote",e.confidence+(e.minutes?" | ~"+e.minutes+" min review/action":"")),node("p","","E: "+(e.energy===null?"unknown":achFmt(e.energy))+" | N: "+(e.nerve===null?"unknown":achFmt(e.nerve))+" | $: "+(e.money===null?"unknown":achFmt(e.money))));}
+        if(!x.completed&&(!x.easy||x.plan)){const detail=node("details");detail.append(node("summary","","Resource estimates and forecast"),node("p","",achievementPlanText(x)),node("p","",x.plan?.eta?"Estimated "+new Date(x.plan.eta).toLocaleDateString("en-GB")+" at "+x.plan.rate.toFixed(2)+"/day over "+Math.round(x.plan.historyDays)+" days.":"Completion date unknown; insufficient positive history."),node("small","staxx-trendnote",x.plan?.note||"No supported cost model."));a.append(detail);}
         if(!x.completed&&x.plan&&["war","happy","profit","company"].includes(x.plan.tool)&&achievementFresh()&&!(d.warHold&&["war","happy","profit"].includes(x.plan.tool))){const go=node("button","","Review in "+({war:"War",happy:"Training",profit:"Profit",company:"Company"}[x.plan.tool]));go.type="button";go.dataset.openStaxx=x.plan.tool;a.append(go);}
         const b=node("button","",achievementGoals.has(x.key)?"Remove goal":x.completed?"Save as goal (earned)":"Track goal");b.type="button";b.dataset.achGoal=x.key;a.append(b);results.append(a);
       }
@@ -451,7 +471,7 @@
       if(x.id==="staxx-ach-director"){achDirector=x.checked;saveLocal(achDirectorKey,achDirector);renderAchievements();return;}
       if(x.id==="staxx-ach-filter"||x.id==="staxx-ach-category"){achievementLimit=25;renderAchievements();return;}
       if(x.dataset.achMerit){const id=Number(x.dataset.achMerit),target=Number(x.value),row=achievementData?.upgrades.find(a=>a.id===id);
-        if(row&&row.level!==null&&achNum(target)&&target>=row.level&&target<=10){if(target===row.level)delete meritGoals[id];else meritGoals[id]=target;saveLocal(meritGoalKey,meritGoals);renderAchievements();}}
+        if(row&&row.level!==null&&achNum(target)&&target>=row.level&&target<=10){if(target===row.level)delete meritGoals[id];else meritGoals[id]=target;saveLocal(meritGoalKey,meritGoals);renderAchievements();renderAchievementToday();}}
     });
     // End achievement UI.
 

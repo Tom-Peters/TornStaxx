@@ -121,3 +121,6 @@ The derived achievement snapshot optionally includes a bounded plan per measured
 ## Easy merits 4.6.1
 
 Rank verified threshold-ready, documented one-off and measured close/positive-pace goals; unknown progress alone is never sufficient. Resource filters and duplicate-counter diversity apply. No game actions are performed. Wiki award descriptions reference https://wiki.torn.com/wiki/Award. Main Training 0.40.1 expands supported counters.
+
+
+4.6.2 adds bounded optional one-off actions (Church donations, attack assist, date-specific login and an already-planned level 10 merit upgrade). Donation cost is an upper bound, not a current deficit. Only the correct UTC date qualifies for date-specific awards. No reset or spending is performed.
