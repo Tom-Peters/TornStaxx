@@ -1,6 +1,6 @@
 ## 4.5.0 - Achievements and merit goals
 
-New Achievements tab and Today/Dashboard shortcuts: browse honors and medals, filter by category, sort supported counters by progress, save award goals, review recent unlocks, and plan merit upgrades with incremental cost and available balance. Update Training-TornStaxx preview to 0.39.4 or later as well; it provides read-only achievement data using its existing PDA key. Unsupported counters remain unknown. No gameplay actions or automatic merit spending. Live account validation remains a device check.
+New Achievements tab and Today/Dashboard shortcuts: browse honors and medals, filter by category, sort supported counters by progress, save award goals, review recent unlocks, and plan merit upgrades with incremental cost and available balance. Update Training-TornStaxx main to 0.39.4 or later as well; it provides read-only achievement data using its existing PDA key. Unsupported counters remain unknown. No gameplay actions or automatic merit spending. Live account validation remains a device check.
 
 ## 4.4.0
 
@@ -38,10 +38,10 @@ https://raw.githubusercontent.com/Tom-Peters/TornStaxx/main/TornStaxx.user.js
 | --- | --- | --- |
 | Profit-TornStaxx | Torn-ProfitStaxx | https://raw.githubusercontent.com/Tom-Peters/Torn-ProfitStaxx/main/ProfitStaxx.user.js |
 | War-TornStaxx | Torn-WarStaxx | https://raw.githubusercontent.com/Tom-Peters/Torn-WarStaxx/main/WarStaxx.user.js |
-| Training-TornStaxx | Torn-Happy-Jump-Helper | https://raw.githubusercontent.com/Tom-Peters/Torn-Happy-Jump-Helper/main/Torn-Happy-Jump-Helper-preview.user.js |
+| Training-TornStaxx | Torn-Happy-Jump-Helper | https://raw.githubusercontent.com/Tom-Peters/Torn-Happy-Jump-Helper/main/Torn-Happy-Jump-Helper.user.js |
 | Company-TornStaxx | Torn-Company-Helper | https://raw.githubusercontent.com/Tom-Peters/Torn-Company-Helper/main/Torn-Company-Helper.user.js |
 
-Use the **raw.githubusercontent.com** URL, not a GitHub file webpage. Keep the scripts **enabled** for both `www.torn.com` and `torn.com`; use end-of-document injection. Reload Torn after updating. The Training preview intentionally replaces only the preview; the independently pinned stable Happy Jump installer is not modified.
+Use the **raw.githubusercontent.com** URL, not a GitHub file webpage. Keep the scripts **enabled** for both `www.torn.com` and `torn.com`; use end-of-document injection. Reload Torn after updating. Training now uses its main production installer. Disable the frozen preview before enabling main. The previous stable build is archived separately; the Training module ID and local data keys are unchanged.
 
 **Versions at initial split:** hub 4.0.0; Profit 1.23.0; War 0.2.0; Training 0.32.0 preview; Company 1.26.0.
 

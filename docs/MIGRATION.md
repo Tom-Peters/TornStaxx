@@ -5,7 +5,7 @@ The four specialist installers previously included approximately 98 KB of copied
 ## Safe upgrade order
 
 1. Install the standalone `TornStaxx.user.js` into Torn PDA and enable it.
-2. Update ProfitStaxx / WarStaxx / Company Helper, and update the **Happy Jump preview** (not the pinned stable fallback).
+2. Update ProfitStaxx / WarStaxx / Company Helper, and update the **Training-TornStaxx main installer** (disable the frozen preview first).
 3. Reload Torn. You should see **one S launcher** with four tools. The Tools view distinguishes **Running** from **Not running**.
 4. Check each module's settings and its existing API key permissions. No key should need to be moved into the hub.
 5. If a module appears **Not running**, confirm that module's userscript is enabled, matches the current Torn URL, uses end-of-document injection, and did not fail at startup. Its own mini launcher is available when the hub script is missing.
@@ -16,4 +16,4 @@ Current repository names and direct raw URLs are deliberately retained. After re
 
 **Changed:** central UI now installs once; module code is about 95 KB smaller; public display names are unified.
 
-**Unchanged:** previous account data/localStorage, API key flows and permissions, transactions and training evidence, stockless businesses, overdose safeguards, war observation and ranking limits, alert identifiers and existing URLs. The pinned stable Happy Jump build remains separate.
+**Unchanged:** previous account data/localStorage, API key flows and permissions, transactions and training evidence, stockless businesses, overdose safeguards, war observation and ranking limits, alert identifiers and existing URLs. The old stable build is archived separately; the main installer is the production release channel.

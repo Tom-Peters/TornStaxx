@@ -106,3 +106,8 @@ Find can pin up to six registered or built-in tool sections to Today. Pins store
 ## Achievements (Hub 4.5.0 / Training 0.39.4)
 
 The Achievements view requests derived data with `staxx:achievements-request` ({force:boolean}) and accepts bounded `staxx:achievements-data` ({version:1,status,snapshot}). Training owns the existing PDA key and read-only Torn API calls; the hub stores only award IDs and merit upgrade target levels locally, never API credentials or raw responses. Award identity includes kind and ID. Default honor bars are excluded. Completion comes only from owned-award IDs; supported, exact requirement patterns use available personal-stat counters. Unknown or ambiguous progress is not estimated. The snapshot includes update time, merit balance, upgrade levels, and a Training war-hold observation. Data stays in memory; opening the view refreshes as needed, with one-minute attempt throttling. Merit goals are planning only and never spend merits. Update both permanent installers.
+
+
+## Training production channel (0.39.4)
+
+Training now ships via `Torn-Happy-Jump-Helper.user.js` in its existing repository. The preview installer is frozen at 0.39.4. Disable it when moving to main. The existing module ID `happy`, storage namespace, and API/event contracts are unchanged. All subsequent releases target main.
