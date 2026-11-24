@@ -1,3 +1,7 @@
+## 4.6.1 - Easiest merits
+
+Find quick actions and threshold-ready awards without requiring historical pace; show reasons and next actions, filter for saving energy or spending, diversify recommendations, and keep war priority. Update Training main 0.40.1 for expanded counters.
+
 ## 4.6.0 - Achievement planner
 
 Easiest five estimated awards, historical completion dates, resource estimates, tool-specific dashboard recommendations, and budget-constrained merit allocation by playstyle. Requires Training main 0.40.0 for historical data. Unknown estimates remain unknown; recommendations are advisory.

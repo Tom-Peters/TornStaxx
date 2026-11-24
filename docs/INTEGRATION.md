@@ -116,3 +116,8 @@ Training now ships via `Torn-Happy-Jump-Helper.user.js` in its existing reposito
 ## Achievement planning (Hub 4.6 / Training main 0.40)
 
 The derived achievement snapshot optionally includes a bounded plan per measured award: historical rate/window, estimate date, energy, nerve, money, points, tool and assumptions. Unknowns remain null. The hub ranks up to five positive-pace candidates, excludes war-conflicting suggestions during Training's hold, links matching goals to the relevant module and adds per-tool goal recommendations to Dashboard. It computes a preference-weighted merit allocation over known upgrade levels and available balance; no resets, spending, or changes to specialist game decisions. Training owns all API access. Update the main installer only.
+
+
+## Easy merits 4.6.1
+
+Rank verified threshold-ready, documented one-off and measured close/positive-pace goals; unknown progress alone is never sufficient. Resource filters and duplicate-counter diversity apply. No game actions are performed. Wiki award descriptions reference https://wiki.torn.com/wiki/Award. Main Training 0.40.1 expands supported counters.
