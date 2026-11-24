@@ -2,7 +2,7 @@
 // @name         TornStaxx - Unified Torn Command Centre
 // @namespace    https://github.com/Tom-Peters/TornStaxx
 // @homepageURL  https://github.com/Tom-Peters/TornStaxx
-// @version      4.5.0
+// @version      4.6.0
 // @description  Shared Torn PDA hub for Profit, War, Training and Company: dashboard, alerts, next actions, search, deep links and activity.
 // @author       IamEEKY
 // @match        https://www.torn.com/*
@@ -21,7 +21,7 @@
   function startHub() {
     if (document.getElementById("staxx-hub-root")) return;
     document.getElementById("staxx-fallback-root")?.remove();
-    window.__TornStaxxHubVersion = "4.5.0";
+    window.__TornStaxxHubVersion = "4.6.0";
     const root = document.createElement("div");
     root.id = "staxx-hub-root";
     root.innerHTML =
@@ -32,12 +32,12 @@
       '<nav class="staxx-main-tabs" aria-label="TornStaxx sections"><button type="button" data-hub-view="today" aria-pressed="true">Today</button><button type="button" data-hub-view="dashboard" aria-pressed="false">Dashboard</button><button type="button" data-hub-view="activity" aria-pressed="false">Activity</button><button type="button" data-hub-view="tools" aria-pressed="false">Tools</button><button type="button" data-hub-view="alerts" aria-pressed="false">Alerts</button><button type="button" data-hub-view="achievements" aria-pressed="false">Achievements</button><button type="button" data-hub-view="more" aria-pressed="false">More</button></nav>' +
       '<section id="staxx-hub-find" aria-label="Find Staxx tools and actions" hidden><label for="staxx-hub-find-input">FIND TOOLS, ACTIONS &amp; ALERTS</label><input id="staxx-hub-find-input" type="search" maxlength="100" autocomplete="off" spellcheck="false" placeholder="e.g. trains, stocks, gym" aria-controls="staxx-hub-find-results"><p id="staxx-hub-find-status" role="status" aria-live="polite"></p><div id="staxx-hub-find-results" role="group" aria-label="Search results"></div></section>' +
       '<div class="staxx-scroll">' +
-      '<section data-hub-section="today"><button type="button" class="staxx-overview-switch" data-hub-view="achievements">Achievements &amp; merit goals</button><section id="staxx-hub-welcome" hidden></section><section id="staxx-hub-best" aria-label="Next review"></section><section id="staxx-hub-pins" aria-label="Pinned sections" hidden></section><div id="staxx-hub-task-filters" role="group" aria-label="Filter actions"></div><section id="staxx-hub-tasks" aria-label="Next steps"></section><details><summary>Updates and upcoming actions</summary><section id="staxx-hub-early"></section><section id="staxx-hub-changes"></section></details><details><summary>Session and checklist</summary><section id="staxx-hub-session"></section><section id="staxx-hub-checklist"></section></details><details><summary>Sources and shortcuts</summary><section id="staxx-hub-source-status"></section><section id="staxx-hub-page-shortcut"></section><div id="staxx-hub-frequent"></div><div id="staxx-hub-quick-tools"></div></details></section>' +
+      '<section data-hub-section="today"><button type="button" class="staxx-overview-switch" data-hub-view="achievements">Achievements &amp; merit goals</button><section id="staxx-hub-welcome" hidden></section><section id="staxx-hub-best" aria-label="Next review"></section><section id="staxx-ach-today" aria-label="Achievement opportunities"></section><section id="staxx-hub-pins" aria-label="Pinned sections" hidden></section><div id="staxx-hub-task-filters" role="group" aria-label="Filter actions"></div><section id="staxx-hub-tasks" aria-label="Next steps"></section><details><summary>Updates and upcoming actions</summary><section id="staxx-hub-early"></section><section id="staxx-hub-changes"></section></details><details><summary>Session and checklist</summary><section id="staxx-hub-session"></section><section id="staxx-hub-checklist"></section></details><details><summary>Sources and shortcuts</summary><section id="staxx-hub-source-status"></section><section id="staxx-hub-page-shortcut"></section><div id="staxx-hub-frequent"></div><div id="staxx-hub-quick-tools"></div></details></section>' +
       '<section data-hub-section="dashboard" hidden><div class="staxx-label"><h3>SUITE DASHBOARD</h3><span>All Staxx helpers</span></div><section id="staxx-hub-daily" aria-label="Daily evidence report"></section><section id="staxx-hub-dashboard"></section></section>' +
       '<section data-hub-section="activity" hidden><div class="staxx-label"><h3>RECENT ACTIVITY</h3><button type="button" data-activity-clear>Clear history</button></div><section id="staxx-hub-activity"></section></section>' +
       '<section data-hub-section="tools" hidden><div class="staxx-label"><h3>YOUR TOOLS</h3><button type="button" data-arrange aria-pressed="false">Reorder</button></div><div id="staxx-hub-tools"></div></section>' +
       '<section data-hub-section="alerts" hidden><div class="staxx-label"><h3>NOTIFICATIONS</h3><span id="staxx-hub-total"></span></div><div id="staxx-hub-alerts"></div></section>' +
-      '<section data-hub-section="achievements" hidden><div class="staxx-label"><h3>ACHIEVEMENTS &amp; MERITS</h3><button type="button" data-ach-refresh>Refresh</button></div><p id="staxx-ach-status" role="status"></p><section id="staxx-ach-summary"></section><section id="staxx-ach-controls" class="staxx-overview-card"><label for="staxx-ach-search">Find an award</label><input id="staxx-ach-search" type="search" maxlength="100" placeholder="Name or requirement"><label for="staxx-ach-filter">Show</label><select id="staxx-ach-filter"><option value="closest">Closest measurable</option><option value="goals">My goals</option><option value="all">All awards</option><option value="honors">Honors</option><option value="medals">Medals</option><option value="earned">Recently earned</option><option value="unknown">Unmeasured</option><option value="merits">Merit upgrades</option></select><label for="staxx-ach-category">Category</label><select id="staxx-ach-category"><option value="">All categories</option></select></section><section id="staxx-ach-results"></section><a class="staxx-ach-link" href="/awards.php">Open Torn Awards</a></section>' +
+      '<section data-hub-section="achievements" hidden><div class="staxx-label"><h3>ACHIEVEMENTS &amp; MERITS</h3><button type="button" data-ach-refresh>Refresh</button></div><p id="staxx-ach-status" role="status"></p><section id="staxx-ach-summary"></section><section id="staxx-ach-controls" class="staxx-overview-card"><label for="staxx-ach-search">Find an award</label><input id="staxx-ach-search" type="search" maxlength="100" placeholder="Name or requirement"><label for="staxx-ach-filter">Show</label><select id="staxx-ach-filter"><option value="recommended">Easiest 5 (estimated)</option><option value="closest">Closest measurable</option><option value="goals">My goals</option><option value="all">All awards</option><option value="honors">Honors</option><option value="medals">Medals</option><option value="earned">Recently earned</option><option value="unknown">Unmeasured</option><option value="merits">Merit upgrades</option><option value="optimizer">Merit optimiser</option></select><label for="staxx-ach-category">Category</label><select id="staxx-ach-category"><option value="">All categories</option></select></section><section id="staxx-ach-results"></section><a class="staxx-ach-link" href="/awards.php">Open Torn Awards</a></section>' +
       '<section data-hub-section="more" hidden><button class="staxx-overview-switch" type="button" data-overview>▦ &nbsp; Daily dashboard · all tools</button>' +
       '<section id="staxx-hub-overview" hidden></section><button class="staxx-overview-switch" type="button" data-diagnostics>⚙ &nbsp; Tool diagnostics</button><section id="staxx-hub-diagnostics" hidden></section>' +
       '<button class="staxx-context-control" type="button" data-usage-reset>Reset learned shortcuts</button><button class="staxx-context-control" type="button" data-vote-reset>Reset recommendation preferences</button><button class="staxx-context-control" type="button" data-change-clear>Mark all changes seen</button><button class="staxx-context-control" type="button" data-hub-mode>Display: Simple</button><button class="staxx-context-control" type="button" data-hub-guide>Show getting-started guide</button>' +
@@ -214,6 +214,7 @@
       const scroll=root.querySelector(".staxx-scroll");
       if(scroll)scroll.scrollTop=0; // Never scroll due to an event-driven data refresh.
       if(view==="achievements"){renderAchievements();requestAchievements(false);}
+      if(view==="today"||view==="dashboard"){renderAchievementToday();if(!achievementFresh()&&achievementStatus!=="loading"&&achievementStatus!=="waiting")requestAchievements(false);}
     }
     let lastDataRequestV26=0;
 
@@ -227,6 +228,16 @@
     if(!meritGoals||typeof meritGoals!=="object"||Array.isArray(meritGoals))meritGoals={};
     const achNum=v=>Number.isSafeInteger(v)&&v>=0;
     const achFmt=v=>typeof v==="number"&&Number.isFinite(v)?v.toLocaleString("en-GB"):"Unknown";
+    const achStyles=["balanced","war","training","profit","company","crime"];
+    const achStyleKey="staxx-hub-achievement-style-v1",achDirectorKey="staxx-hub-achievement-director-v1";
+    let achStyle=safeRead(achStyleKey,"balanced");if(!achStyles.includes(achStyle))achStyle="balanced";
+    let achDirector=safeRead(achDirectorKey,true)!==false;
+    function cleanAchievementPlan(p,progress,updated){
+      if(!p||!progress||!["war","happy","profit","company","general"].includes(p.tool))return null;
+      const amount=v=>typeof v==="number"&&Number.isFinite(v)&&v>=0&&v<=1e15?v:null;
+      const days=Number.isInteger(p.days)&&p.days>0&&p.days<=3650?p.days:null;
+      return {tool:p.tool,counter:/^[a-z0-9]{1,40}$/.test(p.counter||"")?p.counter:"",energy:amount(p.energy),nerve:amount(p.nerve),money:amount(p.money),points:amount(p.points),days,eta:days===null?null:updated+days*86400000,rate:amount(p.rate),historyDays:amount(p.historyDays),note:String(p.note||"").slice(0,400)};
+    }
     function cleanAchievements(value){
       if(!value||!Array.isArray(value.rows)||value.rows.length>2500||!Number.isFinite(value.updated)||value.updated<=0||value.updated>Date.now()+60000)return null;
       const rows=[],seen=new Set();
@@ -235,7 +246,7 @@
         seen.add(x.key);
         const p=x.progress,current=p?.current,target=p?.target;
         const progress=!x.completed&&typeof current==="number"&&Number.isFinite(current)&&current>=0&&achNum(target)&&target>0?{current,target,remaining:Math.max(0,target-current),percent:Math.min(100,100*current/target)}:null;
-        rows.push({key:x.key,kind:x.kind,name:x.name.slice(0,100),description:x.description.slice(0,400),category:String(x.category||"Other").slice(0,60),rarity:String(x.rarity||"").slice(0,40),completed:x.completed,earnedAt:achNum(x.earnedAt)&&x.earnedAt>0&&x.earnedAt<=Date.now()/1000+60?x.earnedAt:null,progress});
+        rows.push({key:x.key,kind:x.kind,name:x.name.slice(0,100),description:x.description.slice(0,400),category:String(x.category||"Other").slice(0,60),rarity:String(x.rarity||"").slice(0,40),completed:x.completed,earnedAt:achNum(x.earnedAt)&&x.earnedAt>0&&x.earnedAt<=Date.now()/1000+60?x.earnedAt:null,progress,plan:cleanAchievementPlan(x.plan,progress,value.updated)});
       }
       if(!rows.length||rows.length!==value.rows.length)return null;
       const m=value.merits,merits=m&&["available","used","honors","medals"].every(k=>achNum(m[k]))?{available:m.available,used:m.used,honors:m.honors,medals:m.medals}:null;
@@ -261,11 +272,87 @@
       if(filter==="unknown")result=result.filter(x=>!x.completed&&!x.progress);
       return result.sort((a,b)=>Number(a.completed)-Number(b.completed)||(b.progress?.percent??-1)-(a.progress?.percent??-1)||a.name.localeCompare(b.name));
     }
+
+    function rankAchievementPlans(rows,hold){
+      const candidates=rows.filter(x=>!x.completed&&x.progress?.remaining>0&&x.plan?.days>0&&!(hold&&["happy","profit","war"].includes(x.plan.tool)));
+      const score=x=>{const p=x.plan;return p.days+((p.energy??0)/450)+((p.nerve??0)/250)+((p.money??0)/2000000)+(p.energy===null?2:0)+(p.nerve===null?2:0)+(p.money===null?2:0);};
+      return candidates.sort((a,b)=>score(a)-score(b)||b.progress.percent-a.progress.percent||a.name.localeCompare(b.name)).slice(0,5);
+    }
+    function meritWeight(name,style,director){
+      const n=String(name||"").toLowerCase();
+      let type="",benefit="",base=0;
+      if(/employee effectiveness/.test(n)){if(director)return null;type="company";benefit="+1 employee effectiveness per level";base=4;}
+      else if(/education/.test(n)){type="training";benefit="2% shorter future education per level";base=6;}
+      else if(/bank interest/.test(n)){type="profit";benefit="+5% bank interest modifier per level on future investments";base=6;}
+      else if(/addiction/.test(n)){type="training";benefit="2% less addiction impact per level";base=4;}
+      else if(/nerve bar/.test(n)){type="crime";benefit="+1 maximum nerve per level";base=3;}
+      else if(/crime (experience|progression)/.test(n)){type="crime";benefit="Crime progression/experience bonus; depends on crime version";base=5;}
+      else if(/life points/.test(n)){type="war";benefit="+5% maximum life per level";base=6;}
+      else if(/critical hit/.test(n)){type="war";benefit="+0.5 percentage points critical hit chance per level";base=5;}
+      else if(/masterful looting/.test(n)){type="profit";benefit="+5% mugging proceeds per level";base=2;}
+      else if(/awareness/.test(n)){type="profit";benefit="+20% item-find rate modifier per level";base=2;}
+      else if(/hospitaliz|hospitalis/.test(n)){type="war";benefit="+5% hospital time per level";base=2;}
+      else if(/stealth/.test(n)){type="war";benefit="+0.2 stealth per level";base=2;}
+      else if(/strength|defen[cs]e|speed|dexterity/.test(n)){type="war";benefit="Passive combat-stat modifier, not gym gain";base=4;}
+      else if(/mastery/.test(n)){type="war";benefit="Weapon-class combat bonus; verify your equipped weapon";base=1;}
+      else return null;
+      const multiplier=style==="balanced"?1:style===type?2.5:0.65;
+      return {weight:base*multiplier,type,benefit};
+    }
+    function optimiseMerits(upgrades,balance,style,director){
+      if(!achNum(balance))return null;
+      const budget=Math.min(balance,550),eligible=upgrades.filter(x=>achNum(x.level)&&x.level<10).map(x=>({...x,rule:meritWeight(x.name,style,director)})).filter(x=>x.rule);
+      let dp=Array(budget+1).fill(null);dp[0]={score:0,items:[]};
+      for(const x of eligible){const next=Array(budget+1).fill(null);
+        for(let spent=0;spent<=budget;spent++){if(!dp[spent])continue;for(let level=x.level;level<=10;level++){
+          const cost=meritGoalCost(x.level,level),total=spent+cost;if(total>budget)break;
+          let score=dp[spent].score;for(let i=x.level+1;i<=level;i++)score+=x.rule.weight*(1-0.035*(i-1));
+          if(!next[total]||score>next[total].score)next[total]={score,items:level>x.level?[...dp[spent].items,{id:x.id,name:x.name,from:x.level,to:level,cost,benefit:x.rule.benefit}]:dp[spent].items};
+        }}dp=next;
+      }
+      let best=0;for(let i=1;i<=budget;i++)if(dp[i]&&(!dp[best]||dp[i].score>dp[best].score))best=i;
+      return {spent:best,left:balance-best,items:dp[best]?.items||[]};
+    }
+    function achievementPlanText(x){
+      const p=x.plan;if(!p)return "Cost and completion date unknown.";
+      const cash=p.money===null?"$ unknown":"$"+achFmt(Math.round(p.money))+" estimated";
+      return cash+" | E: "+(p.energy===null?"unknown":achFmt(p.energy))+" | N: "+(p.nerve===null?"unknown":achFmt(p.nerve))+(p.points===null?"":" | "+achFmt(p.points)+" points");
+    }
+    function achievementFresh(){return achievementData&&achievementStatus==="ready"&&Date.now()-achievementData.updated<=600000;}
+    function renderAchievementToday(){
+      const host=root.querySelector("#staxx-ach-today");if(!host)return;host.replaceChildren();
+      if(!achievementFresh())return;
+      const d=achievementData,top=rankAchievementPlans(d.rows,d.warHold).slice(0,1);
+      if(!top.length)return;
+      const a=node("article","staxx-overview-card");a.append(node("b","","Merit opportunity"),node("p","",top[0].name+" | "+top[0].plan.days+" days at observed pace"));
+      const b=node("button","staxx-overview-switch","Review easiest merits");b.type="button";b.dataset.hubView="achievements";a.append(b);host.append(a);
+    }
+    function achievementToolCard(id){
+      if(!achievementFresh())return null;
+      const d=achievementData,rows=d.rows.filter(x=>!x.completed&&x.progress?.remaining>0&&x.plan?.tool===id);
+      const chosen=rows.sort((a,b)=>Number(achievementGoals.has(b.key))-Number(achievementGoals.has(a.key))||(a.plan.days??Infinity)-(b.plan.days??Infinity)||b.progress.percent-a.progress.percent).slice(0,2);
+      const a=node("div","staxx-overview-card");a.append(node("b","","Merit goals for this tool"));
+      if(d.warHold&&["war","happy","profit"].includes(id)){a.append(node("p","staxx-trendnote","War or unverified war status: normal faction priorities override merit goals."));return a;}
+      if(!chosen.length){a.append(node("small","","No verified measurable matching goals."));return a;}
+      for(const x of chosen)a.append(node("p","",x.name+" | "+achFmt(x.progress.remaining)+" remaining"+(x.plan.days?" | ~"+x.plan.days+" days":"")));
+      return a;
+    }
+    function renderMeritOptimiser(results,d){
+      const a=node("article","staxx-overview-card");a.append(node("b","","Allocate available merits"),node("p","","Preference-weighted planning, not a guaranteed objective optimum. No reset or automatic spending."));
+      const select=node("select");select.id="staxx-ach-style";for(const [value,label] of [["balanced","Balanced"],["war","Ranked war / combat"],["training","Training / education"],["profit","Profit / banking"],["company","Company employee"],["crime","Crime progression"]]){const o=node("option","",label);o.value=value;select.append(o);}select.value=achStyle;
+      const role=node("label",""," Company director");const check=node("input");check.type="checkbox";check.id="staxx-ach-director";check.checked=achDirector;role.append(check);a.append(select,role);results.append(a);
+      if(!achievementFresh()||!d.merits){results.append(node("p","staxx-trendnote","Refresh current merit levels and balance before planning."));return;}
+      const plan=optimiseMerits(d.upgrades,d.merits.available,achStyle,achDirector);
+      if(!plan||!plan.items.length){results.append(node("p","","No supported affordable upgrades at known levels."));return;}
+      results.append(node("p","","Spend "+plan.spent+" of "+d.merits.available+" merits | "+plan.left+" left"));
+      for(const x of plan.items){const b=node("article","staxx-overview-card");b.append(node("b","",x.name),node("p","","Level "+x.from+" to "+x.to+" | "+x.cost+" merits"),node("small","",x.benefit));results.append(b);}
+    }
+
     function renderAchievements(){
       const summary=root.querySelector("#staxx-ach-summary"),results=root.querySelector("#staxx-ach-results"),status=root.querySelector("#staxx-ach-status"),filter=root.querySelector("#staxx-ach-filter"),category=root.querySelector("#staxx-ach-category"),search=root.querySelector("#staxx-ach-search");
       if(!summary||!results||!status||!filter||!category||!search)return;
       const d=achievementData,stale=d&&Date.now()-d.updated>600000;
-      const messages={idle:"Open this section to load Torn awards.",waiting:"Connecting to Training-TornStaxx...",loading:"Reading Torn awards...",missing:"Achievement provider not responding. Update and enable Training-TornStaxx 0.39.4 or later, then refresh.",key:"Torn PDA API key unavailable in Training-TornStaxx.",error:"Torn did not return complete award data. Retry after one minute; check API permissions.",retry:"Refresh limited to once per minute.",cached:"Showing previous snapshot; refresh limited to once per minute.",ready:"Torn award ownership verified at last refresh."};
+      const messages={idle:"Open this section to load Torn awards.",waiting:"Connecting to Training-TornStaxx...",loading:"Reading Torn awards...",missing:"Achievement provider not responding. Update and enable Training-TornStaxx main 0.40.0 or later, then refresh.",key:"Torn PDA API key unavailable in Training-TornStaxx.",error:"Torn did not return complete award data. Retry after one minute; check API permissions.",retry:"Refresh limited to once per minute.",cached:"Showing previous snapshot; refresh limited to once per minute.",ready:"Torn award ownership verified at last refresh."};
       status.textContent=(messages[achievementStatus]||messages.idle)+(d?" Last checked "+new Date(d.updated).toLocaleString("en-GB")+(stale||achievementStatus!=="ready"?" (previous snapshot).":"."):"");
       summary.replaceChildren();results.replaceChildren();
       if(!d)return;
@@ -281,6 +368,7 @@
         for(const c of categories){const o=node("option","",c);o.value=c;category.append(o);}category.value=categories.includes(selected)?selected:"";
       }
       const query=search.value.trim().toLowerCase();
+      if(filter.value==="optimizer"){renderMeritOptimiser(results,d);return;}
       if(filter.value==="merits"){
         const chosen=d.upgrades.filter(x=>!query||(x.name+" "+x.description).toLowerCase().includes(query));
         let cost=0,unknown=false;
@@ -296,7 +384,8 @@
         if(!chosen.length)results.append(node("p","staxx-empty","No matching upgrade data."));
         return;
       }
-      const rows=selectAchievementRows(d.rows,filter.value,query,category.value,achievementGoals);
+      const rows=filter.value==="recommended"?achievementFresh()?rankAchievementPlans(selectAchievementRows(d.rows,"all",query,category.value,achievementGoals),d.warHold):[]:selectAchievementRows(d.rows,filter.value,query,category.value,achievementGoals);
+      if(filter.value==="recommended")results.append(node("p","staxx-trendnote","Up to five supported awards with observed historical pace. Ranking weighs elapsed days and estimated resources; unknown costs are penalised. War holds suppress combat, travel and training recommendations. Not a complete catalogue-wide guarantee."));
       results.append(node("p","staxx-trendnote",rows.length+" matching awards. Progress uses supported personal-stat counters, not a Torn eligibility guarantee."));
       for(const x of rows.slice(0,achievementLimit)){
         const a=node("article","staxx-overview-card staxx-ach-card");
@@ -305,6 +394,8 @@
         else if(x.progress){
           const p=x.progress,bar=node("progress");bar.max=100;bar.value=p.percent;bar.setAttribute("aria-label",x.name+" progress");a.append(bar,node("p","",achFmt(p.current)+" / "+achFmt(p.target)+" | "+p.percent.toFixed(1)+"%"),node("small","",p.remaining===0?"Threshold reached; awaiting Torn award confirmation.":achFmt(p.remaining)+" remaining"));
         }else a.append(node("small","staxx-trendnote","Progress unavailable; check requirements in Torn."));
+        if(!x.completed){const detail=node("details");detail.append(node("summary","","Resource estimates and forecast"),node("p","",achievementPlanText(x)),node("p","",x.plan?.eta?"Estimated "+new Date(x.plan.eta).toLocaleDateString("en-GB")+" at "+x.plan.rate.toFixed(2)+"/day over "+Math.round(x.plan.historyDays)+" days.":"Completion date unknown; insufficient positive history."),node("small","staxx-trendnote",x.plan?.note||"No supported cost model."));a.append(detail);}
+        if(!x.completed&&x.plan&&["war","happy","profit","company"].includes(x.plan.tool)&&achievementFresh()&&!(d.warHold&&["war","happy","profit"].includes(x.plan.tool))){const go=node("button","","Review in "+({war:"War",happy:"Training",profit:"Profit",company:"Company"}[x.plan.tool]));go.type="button";go.dataset.openStaxx=x.plan.tool;a.append(go);}
         const b=node("button","",achievementGoals.has(x.key)?"Remove goal":x.completed?"Save as goal (earned)":"Track goal");b.type="button";b.dataset.achGoal=x.key;a.append(b);results.append(a);
       }
       if(rows.length>achievementLimit){const b=node("button","","Show 25 more");b.type="button";b.dataset.achMore="1";results.append(b);}
@@ -314,11 +405,13 @@
       const v=e.detail;if(v?.version!==1||!["loading","ready","cached","retry","key","error"].includes(v.status))return;
       const data=cleanAchievements(v.snapshot);
       if(data)achievementData=data;
-      achievementStatus=v.status==="ready"&&!data?"error":v.status;renderAchievements();
+      achievementStatus=v.status==="ready"&&!data?"error":v.status;renderAchievements();renderAchievementToday();renderDashboard();
     });
     root.addEventListener("input",e=>{if(e.target.id==="staxx-ach-search"){achievementLimit=25;renderAchievements();}});
     root.addEventListener("change",e=>{
       const x=e.target;
+      if(x.id==="staxx-ach-style"){if(achStyles.includes(x.value)){achStyle=x.value;saveLocal(achStyleKey,achStyle);renderAchievements();}return;}
+      if(x.id==="staxx-ach-director"){achDirector=x.checked;saveLocal(achDirectorKey,achDirector);renderAchievements();return;}
       if(x.id==="staxx-ach-filter"||x.id==="staxx-ach-category"){achievementLimit=25;renderAchievements();return;}
       if(x.dataset.achMerit){const id=Number(x.dataset.achMerit),target=Number(x.value),row=achievementData?.upgrades.find(a=>a.id===id);
         if(row&&row.level!==null&&achNum(target)&&target>=row.level&&target<=10){if(target===row.level)delete meritGoals[id];else meritGoals[id]=target;saveLocal(meritGoalKey,meritGoals);renderAchievements();}}
@@ -1005,6 +1098,7 @@
         }
         if(dl.childElementCount)card.append(dl);
         const go=node('button','staxx-overview-switch','Open '+e.label);go.type='button';go.dataset.openStaxx=e.id;card.append(go);
+        const goals=achievementToolCard(e.id);if(goals)card.append(goals);
         host.append(card);
       }
     }
@@ -1203,7 +1297,7 @@
       if(b.dataset.achMore){achievementLimit+=25;renderAchievements();return;}
       if(b.dataset.achGoal&&validAwardKey(b.dataset.achGoal)&&achievementData?.rows.some(x=>x.key===b.dataset.achGoal)){
         if(achievementGoals.has(b.dataset.achGoal))achievementGoals.delete(b.dataset.achGoal);else if(achievementGoals.size<100)achievementGoals.add(b.dataset.achGoal);
-        saveLocal(goalKey,[...achievementGoals]);renderAchievements();return;
+        saveLocal(goalKey,[...achievementGoals]);renderAchievements();renderAchievementToday();renderDashboard();return;
       }
       if(b.dataset.hubView){setFindOpen(false);switchHubView(b.dataset.hubView);return;}
       if(b.dataset.sessionMinutes!==undefined){

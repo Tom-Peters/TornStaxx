@@ -1,3 +1,7 @@
+## 4.6.0 - Achievement planner
+
+Easiest five estimated awards, historical completion dates, resource estimates, tool-specific dashboard recommendations, and budget-constrained merit allocation by playstyle. Requires Training main 0.40.0 for historical data. Unknown estimates remain unknown; recommendations are advisory.
+
 ## 4.5.0 - Achievements and merit goals
 
 New Achievements tab and Today/Dashboard shortcuts: browse honors and medals, filter by category, sort supported counters by progress, save award goals, review recent unlocks, and plan merit upgrades with incremental cost and available balance. Update Training-TornStaxx main to 0.39.4 or later as well; it provides read-only achievement data using its existing PDA key. Unsupported counters remain unknown. No gameplay actions or automatic merit spending. Live account validation remains a device check.

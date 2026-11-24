@@ -111,3 +111,8 @@ The Achievements view requests derived data with `staxx:achievements-request` ({
 ## Training production channel (0.39.4)
 
 Training now ships via `Torn-Happy-Jump-Helper.user.js` in its existing repository. The preview installer is frozen at 0.39.4. Disable it when moving to main. The existing module ID `happy`, storage namespace, and API/event contracts are unchanged. All subsequent releases target main.
+
+
+## Achievement planning (Hub 4.6 / Training main 0.40)
+
+The derived achievement snapshot optionally includes a bounded plan per measured award: historical rate/window, estimate date, energy, nerve, money, points, tool and assumptions. Unknowns remain null. The hub ranks up to five positive-pace candidates, excludes war-conflicting suggestions during Training's hold, links matching goals to the relevant module and adds per-tool goal recommendations to Dashboard. It computes a preference-weighted merit allocation over known upgrade levels and available balance; no resets, spending, or changes to specialist game decisions. Training owns all API access. Update the main installer only.
