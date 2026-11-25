@@ -4,7 +4,7 @@
   "hub": {
     "repository": "TornStaxx",
     "entrypoint": "TornStaxx.user.js",
-    "version": "4.6.2"
+    "version": "4.7.0"
   },
   "modules": [
     {

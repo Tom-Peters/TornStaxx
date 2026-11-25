@@ -7,7 +7,8 @@ const src=fs.readFileSync(path.join(__dirname,'../TornStaxx.user.js'),'utf8');
 test('Torn PDA metadata is at byte zero with permanent update URLs',()=>{
   assert.ok(src.startsWith('// ==UserScript==\n'));
   assert.match(src,/^\/\/ @name\s+TornStaxx - Unified Torn Command Centre/m);
-  assert.match(src,/^\/\/ @version\s+4\.6\.2/m);
+  assert.equal(src.match(/^\/\/ @version\s+(\S+)/m)[1],require("../package.json").version);
+  assert.equal(require("../suite/manifest.json").hub.version,require("../package.json").version);
   assert.match(src,/^\/\/ @author\s+IamEEKY/m);
   assert.match(src,/^\/\/ @match\s+https:\/\/www\.torn\.com\/\*/m);
   assert.match(src,/^\/\/ @downloadURL\s+https:\/\/raw\.githubusercontent\.com\/Tom-Peters\/TornStaxx\/main\/TornStaxx\.user\.js/m);

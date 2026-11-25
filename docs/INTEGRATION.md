@@ -124,3 +124,10 @@ Rank verified threshold-ready, documented one-off and measured close/positive-pa
 
 
 4.6.2 adds bounded optional one-off actions (Church donations, attack assist, date-specific login and an already-planned level 10 merit upgrade). Donation cost is an upper bound, not a current deficit. Only the correct UTC date qualifies for date-specific awards. No reset or spending is performed.
+
+
+## Personal shortlist (Hub 4.7 / Training main 0.41)
+
+Training resolves v2 category paths to historical stat names before matching award requirements. Education combines completed course IDs with the department awarding the specific honor. For an enrolled final course the optional plan field `forecast: "course"` identifies the scheduled finish in `eta` (milliseconds UTC). This plan has no historical rate. Older Hub releases require a numeric rate to display a date, so Training includes the exact ETA but leaves the historical day estimate unset for course plans. Hub 4.7 derives their remaining days from the scheduled finish. Other positive-pace forecasts retain their existing shape.
+
+The hub prioritises near-term actions and fills spare positions with known, started milestones ranked by completion percentage. Budget and war filters apply to both tiers. Fresh, rate-limited snapshots stay usable until their original expiry. Tracked goals store their first measured counter locally and show progress from that point.

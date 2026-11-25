@@ -1,3 +1,7 @@
+## 4.7.0 - Personal merit shortlist and tracked progress
+
+Easiest 5 puts near-term opportunities first and fills open places with measured longer-term goals. Each goal shows the next step, remaining progress and a finish date when supported. Track a goal to see how far its counter has moved. Saved goals start measuring from their first fresh reading. Search and category filters fold away on mobile. Update Training main to 0.41.0 for grouped Torn stats and education progress.
+
 ## 4.6.2 - One-off merit opportunities
 
 Additional documented one-off opportunities, calendar awards on the correct Torn day, and a level-10 merit opportunity only when it matches an affordable saved goal. No automatic spending.
