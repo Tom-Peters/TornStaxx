@@ -2,7 +2,7 @@
 // @name         TornStaxx - Unified Torn Command Centre
 // @namespace    https://github.com/Tom-Peters/TornStaxx
 // @homepageURL  https://github.com/Tom-Peters/TornStaxx
-// @version      4.7.0
+// @version      4.8.0
 // @description  Shared Torn PDA hub for Profit, War, Training and Company: dashboard, alerts, next actions, search, deep links and activity.
 // @author       IamEEKY
 // @match        https://www.torn.com/*
@@ -21,7 +21,7 @@
   function startHub() {
     if (document.getElementById("staxx-hub-root")) return;
     document.getElementById("staxx-fallback-root")?.remove();
-    window.__TornStaxxHubVersion = "4.7.0";
+    window.__TornStaxxHubVersion = "4.8.0";
     const root = document.createElement("div");
     root.id = "staxx-hub-root";
     root.innerHTML =
@@ -37,7 +37,7 @@
       '<section data-hub-section="activity" hidden><div class="staxx-label"><h3>RECENT ACTIVITY</h3><button type="button" data-activity-clear>Clear history</button></div><section id="staxx-hub-activity"></section></section>' +
       '<section data-hub-section="tools" hidden><div class="staxx-label"><h3>YOUR TOOLS</h3><button type="button" data-arrange aria-pressed="false">Reorder</button></div><div id="staxx-hub-tools"></div></section>' +
       '<section data-hub-section="alerts" hidden><div class="staxx-label"><h3>NOTIFICATIONS</h3><span id="staxx-hub-total"></span></div><div id="staxx-hub-alerts"></div></section>' +
-      '<section data-hub-section="achievements" hidden><div class="staxx-label"><h3>ACHIEVEMENTS &amp; MERITS</h3><button type="button" data-ach-refresh>Refresh</button></div><p id="staxx-ach-status" role="status"></p><section id="staxx-ach-summary"></section><section id="staxx-ach-controls" class="staxx-overview-card"><label for="staxx-ach-filter">Show</label><select id="staxx-ach-filter"><option value="recommended">Easiest 5</option><option value="closest">Closest measurable</option><option value="goals">My goals</option><option value="unearned">All unearned</option><option value="all">All awards</option><option value="honors">Honors</option><option value="medals">Medals</option><option value="earned">Recently earned</option><option value="unknown">Unmeasured</option><option value="merits">Merit upgrades</option><option value="optimizer">Merit optimiser</option></select><details id="staxx-ach-options"><summary>Search and filters</summary><label for="staxx-ach-search">Find an award</label><input id="staxx-ach-search" type="search" maxlength="100" placeholder="Name or requirement"><label for="staxx-ach-easy-mode">Easy merit priority</label><select id="staxx-ach-easy-mode"><option value="balanced">Balanced / quick wins</option><option value="save-energy">Save energy and nerve</option><option value="save-money">Keep spending low</option></select><label for="staxx-ach-category">Category</label><select id="staxx-ach-category"><option value="">All categories</option></select></details></section><section id="staxx-ach-results"></section><a class="staxx-ach-link" href="/awards.php">Open Torn Awards</a></section>' +
+      '<section data-hub-section="achievements" hidden><div class="staxx-label"><h3>ACHIEVEMENTS &amp; MERITS</h3><button type="button" data-ach-refresh>Refresh</button></div><p id="staxx-ach-status" role="status"></p><section id="staxx-ach-summary"></section><section id="staxx-ach-controls" class="staxx-overview-card"><label for="staxx-ach-filter">Show</label><select id="staxx-ach-filter"><option value="recommended">Easiest 5</option><option value="hidden">Hidden suggestions</option><option value="closest">Closest measurable</option><option value="goals">My goals</option><option value="unearned">All unearned</option><option value="all">All awards</option><option value="honors">Honors</option><option value="medals">Medals</option><option value="earned">Recently earned</option><option value="unknown">Unmeasured</option><option value="merits">Merit upgrades</option><option value="optimizer">Merit optimiser</option></select><div id="staxx-ach-limits" role="group" aria-label="Shortlist filters"><button type="button" data-ach-toggle="noEnergy" aria-pressed="false">No E</button><button type="button" data-ach-toggle="noCash" aria-pressed="false">No cash</button><button type="button" data-ach-toggle="todayOnly" aria-pressed="false">Finish today</button></div><details id="staxx-ach-options"><summary>Search and filters</summary><label for="staxx-ach-search">Find an award</label><input id="staxx-ach-search" type="search" maxlength="100" placeholder="Name or requirement"><label for="staxx-ach-easy-mode">Easy merit priority</label><select id="staxx-ach-easy-mode"><option value="balanced">Balanced / quick wins</option><option value="save-energy">Save energy and nerve</option><option value="save-money">Keep spending low</option></select><label for="staxx-ach-category">Category</label><select id="staxx-ach-category"><option value="">All categories</option></select></details></section><section id="staxx-ach-results"></section><a class="staxx-ach-link" href="/awards.php">Open Torn Awards</a></section>' +
       '<section data-hub-section="more" hidden><button class="staxx-overview-switch" type="button" data-overview>▦ &nbsp; Daily dashboard · all tools</button>' +
       '<section id="staxx-hub-overview" hidden></section><button class="staxx-overview-switch" type="button" data-diagnostics>⚙ &nbsp; Tool diagnostics</button><section id="staxx-hub-diagnostics" hidden></section>' +
       '<button class="staxx-context-control" type="button" data-usage-reset>Reset learned shortcuts</button><button class="staxx-context-control" type="button" data-vote-reset>Reset recommendation preferences</button><button class="staxx-context-control" type="button" data-change-clear>Mark all changes seen</button><button class="staxx-context-control" type="button" data-hub-mode>Display: Simple</button><button class="staxx-context-control" type="button" data-hub-guide>Show getting-started guide</button>' +
@@ -93,6 +93,7 @@
     css.textContent += [
       '#staxx-hub-drawer .staxx-main-tabs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px;padding:9px 10px;background:#08192d;border-bottom:1px solid #284b6b;flex-shrink:0}',
       '#staxx-hub-drawer .staxx-main-tabs button{min-width:0;min-height:42px;background:#102b46;border:1px solid #315d7d;border-radius:9px;font-size:11px;font-weight:800;padding:5px 2px;color:#cce9f7}',
+      '#staxx-ach-limits{display:flex;gap:4px;margin-top:7px;flex-wrap:wrap}#staxx-ach-limits button{background:#12314b;border:1px solid #396283;border-radius:6px;color:#cde7f4;min-height:36px;padding:3px 7px;font-size:12px;flex:1 1 auto}#staxx-ach-limits button[aria-pressed=true]{background:#076da5;color:white;border-color:#80dbff}#staxx-ach-today .staxx-ach-unlock{border-color:#4c9f82}#staxx-ach-results .staxx-ach-shared{color:#8de4cd}#staxx-ach-results ol{padding-left:1.55em;overflow-wrap:anywhere}#staxx-ach-results li{margin:4px 0}',
       '#staxx-ach-controls label{display:block;margin:8px 0 3px;font-size:12px}#staxx-ach-controls input,#staxx-ach-controls select,#staxx-ach-results select{width:100%;min-height:36px;border:1px solid #315d7d;border-radius:7px;background:#102b46;color:#e7f2ff;padding:5px;font:inherit}#staxx-ach-status{font-size:12px;color:#b7d3e7}#staxx-ach-results .staxx-ach-card{margin-bottom:8px}#staxx-ach-results progress{width:100%;height:12px;accent-color:#54d7fa}#staxx-ach-results p{overflow-wrap:anywhere}#staxx-ach-results button{width:100%;min-height:36px;border:1px solid #315d7d;border-radius:7px;background:#153a57;margin-top:7px}.staxx-ach-link{display:block;color:#70ddff;padding:12px 2px}#staxx-ach-summary .staxx-overview-card{margin-bottom:8px}',
       '#staxx-hub-drawer .staxx-main-tabs [data-hub-view=achievements]{grid-column:span 2}#staxx-ach-controls summary,#staxx-ach-results summary{cursor:pointer;padding:8px 0;color:#9be3ff}#staxx-ach-results .staxx-ach-card h4{font-size:15px;line-height:1.25;color:#edf8ff;margin:2px 0 6px;overflow-wrap:anywhere}#staxx-ach-results .staxx-ach-card p{font-size:12px}#staxx-ach-results .staxx-ach-actions{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}#staxx-ach-results .staxx-ach-actions>*{width:auto;flex:1 1 auto;text-align:center;align-content:center;margin:0;min-width:0}#staxx-ach-results .staxx-ach-actions a{font-size:12px;color:#86e1ff}#staxx-ach-summary button{font:inherit;color:#8ae1ff;background:none;border:0;padding:6px 0;text-decoration:underline}#staxx-ach-controls select,#staxx-ach-controls input{box-sizing:border-box}',
       '#staxx-hub-drawer .staxx-main-tabs button[aria-pressed="true"]{background:#0879bd;border-color:#54d7fa;color:#fff}',
@@ -225,12 +226,28 @@
     const validAwardKey=k=>typeof k==="string"&&/^(honors|medals):[1-9][0-9]{0,9}$/.test(k);
     const oldGoals=safeRead(goalKey,[]);
     let achievementGoals=new Set(Array.isArray(oldGoals)?oldGoals.filter(validAwardKey).slice(0,100):[]);
+    const hiddenAwardKey="staxx-hub-hidden-awards-v1",shortlistKey="staxx-hub-award-filters-v1",ownershipKey="staxx-hub-tracked-unlocks-v1";
+    function readHiddenAwards(){
+      const list=safeRead(hiddenAwardKey,[]);
+      return new Set(Array.isArray(list)?list.filter(validAwardKey).slice(0,2500):[]);
+    }
+    function readShortlistFilters(){
+      const prefs=safeRead(shortlistKey,{});
+      return {noEnergy:prefs?.noEnergy===true,noCash:prefs?.noCash===true,todayOnly:prefs?.todayOnly===true};
+    }
+    let hiddenAwards=readHiddenAwards(),shortlistFilters=readShortlistFilters();
     const awardBaselineKey="staxx-hub-award-baselines-v1",savedBaselines=safeRead(awardBaselineKey,{});
     const goalBaselines={};
-    for(const key of achievementGoals){
-      const b=savedBaselines?.[key];
-      if(Number.isFinite(b?.current)&&b.current>=0&&Number.isSafeInteger(b.target)&&b.target>0&&typeof b.counter==="string")goalBaselines[key]=b;
+    function loadGoalBaselines(saved){
+      for(const key of Object.keys(goalBaselines))delete goalBaselines[key];
+      for(const key of achievementGoals){
+        const b=saved?.[key];
+        if(Number.isFinite(b?.current)&&b.current>=0&&Number.isSafeInteger(b.target)&&b.target>0&&typeof b.counter==="string"){
+          goalBaselines[key]={current:b.current,target:b.target,counter:b.counter.slice(0,40)};
+        }
+      }
     }
+    loadGoalBaselines(savedBaselines);
     function recordGoalBaselines(){
       if(!achievementFresh())return;
       let changed=false;
@@ -240,6 +257,28 @@
         goalBaselines[row.key]={current,target,counter:row.plan.counter};changed=true;
       }
       if(changed)saveLocal(awardBaselineKey,goalBaselines);
+    }
+    function readTrackedOwnership(){
+      const saved=safeRead(ownershipKey,{}),result={};
+      for(const key of achievementGoals){
+        const entry=saved?.[key];
+        if(entry&&["unearned","new","seen"].includes(entry.state))result[key]={state:entry.state,name:String(entry.name||"").slice(0,100)};
+      }
+      return result;
+    }
+    let trackedOwnership=readTrackedOwnership();
+    function observeTrackedUnlocks(){
+      if(!achievementFresh())return;
+      trackedOwnership=readTrackedOwnership();
+      let changed=false;
+      for(const row of achievementData.rows){
+        if(!achievementGoals.has(row.key))continue;
+        const old=trackedOwnership[row.key];
+        const state=trackedUnlockState(old?.state,row.completed,!!goalBaselines[row.key]);
+        if(old?.state===state)continue;
+        trackedOwnership[row.key]={state,name:row.name};changed=true;
+      }
+      if(changed)saveLocal(ownershipKey,trackedOwnership);
     }
     let meritGoals=safeRead(meritGoalKey,{});
     if(!meritGoals||typeof meritGoals!=="object"||Array.isArray(meritGoals))meritGoals={};
@@ -300,7 +339,7 @@
       const make=(tier,score,reason,action,energy,nerve,money,minutes,confidence,group=null)=>({tier,score,reason,action,energy,nerve,money,minutes,confidence,group});
       if(p&&p.remaining===0)return make("Check unlock",0,"Counter already meets the requirement","Open Awards and check whether a qualifying action is needed. Do not repeat a costly action just to trigger an award.",null,null,null,2,"Counter verified; award not earned");
       if(x.kind==="honors"&&n==="historian"&&/^read a chronicle$/i.test(d))
-        return make("Quick win",1,"No energy, nerve or item cost","Open the Newspaper, choose Chronicles and read a chronicle. The time required can vary; refresh after Torn grants the award.",0,0,0,null,"Documented action; duration uncertain");
+        return make("Quick win",1,"No energy, nerve or item cost","Open the Newspaper, choose Chronicles and read a chronicle. The time required can vary; refresh after Torn grants the award.",0,0,0,15,"Approximate reading time from player reports");
       if(x.kind==="honors"&&n==="lavish"&&/^dump an item with a current market value of at least \$1,000,000$/i.test(d)&&!hold&&mode==="balanced")
         return make("One-off",8,"One item disposal; minimum item value $1m","Only if willing to lose an item worth at least $1m, verify current market value in Torn and manually trash it.",0,0,1000000,5,"Minimum sacrificed value, not live price");
       if(x.kind==="honors"){
@@ -335,7 +374,7 @@
       const education=k==="educationcourses"||/^degree[0-9]+$/.test(k);
       if(scheduled)return make("Course under way",2+Math.min(90,plan.days||1)/5,"Final qualifying course finishes "+new Date(plan.eta).toLocaleDateString("en-GB",{timeZone:"UTC"}),"Let your current course finish, then refresh to confirm the award.",0,0,0,null,"Scheduled by Torn");
       const closeCount=direct&&(remaining<=5||(p.percent>=98&&remaining<=25));
-      const longer=(!historical&&!closeCount)||(historical&&plan.days>90&&remaining>5);
+      const longer=(!historical&&!closeCount)||(historical&&plan.days>7);
       if(longer&&(!k||!(p.current>0)))return null;
       const action=education?"Check the remaining courses in Education and choose the next one that counts.":({stockpayouts:"Check the next payout on your existing stock benefits.",awards:"Earn other honors or medals to advance this milestone.",trainsreceived:"Check your next employee train with your director.",attackswon:"Win qualifying attacks during normal combat.",attacksassisted:"Assist in qualifying attacks.",bountiescollected:"Collect eligible bounties; verify target and combat suitability.",refills:"Use normal daily energy refills; do not waste existing energy.",nerverefills:"Use normal daily nerve refills; do not waste existing nerve.",cityfinds:"Check the city map for naturally spawned items.",jobpointsused:"Use eligible personal job points; verify balance and role.",itemsboughtabroad:"Purchase qualifying items on your next suitable trip.",medicalitemsused:"Use medical items only when needed.",bloodwithdrawn:"Fill blood bags only if medically and strategically appropriate in game.",candyused:"Use candy as part of normal training plans.",alcoholused:"Use alcohol within your normal nerve plan.",energydrinkused:"Use energy drinks only when beneficial to your existing plan.",itemsdumped:"Trash only unwanted low-value items.",virusescoded:"Code a suitable virus using existing education and equipment.",peoplebusted:"Select eligible jail busts; check nerve and success chance.",contractscompleted:"Complete qualifying missions.",raceswon:"Enter suitable races; wins are not guaranteed."})[k]||(/travel$/.test(k)||k==="traveltimes"?"Combine the required trips with your existing travel plan; verify travel eligibility.":"Complete the remaining qualifying actions during normal gameplay.");
       if(longer)return make("Longer-term goal",1000+(100-p.percent),p.percent.toFixed(1)+"% complete"+(historical?" | ~"+plan.days+" days at your pace":" | finish date unknown"),action,energy,nerve,money,null,"Ranked by measured progress");
@@ -344,9 +383,76 @@
       const tier=remaining<=5?"Near finish":historical&&plan.days<=7?"This week":"Steady progress";
       return make(tier,score,remaining+" remaining"+(historical?" | ~"+plan.days+" days at observed pace":" | no reliable pace"),action,energy,nerve,money,null,historical?"Historical estimate":"Action count verified; time unknown");
     }
+    function trackedUnlockState(previous,completed,hadBaseline){
+      if(previous==="new"||previous==="seen")return previous;
+      if(!completed)return "unearned";
+      return previous==="unearned"||hadBaseline?"new":"seen";
+    }
+    function awardFinish(x,easy,now,updated){
+      if(easy.tier==="Check unlock")return null;
+      const plan=x.plan;
+      if(plan?.forecast==="course")return plan.eta>now?{at:plan.eta,source:"Course finish"}:null;
+      if(easy.minutes>0)return {at:now+easy.minutes*60000,source:"Action estimate"};
+      if(!(plan?.rate>0&&plan.historyDays>=7&&x.progress?.remaining>0))return null;
+      const days=x.progress.remaining/plan.rate;
+      if(!Number.isFinite(days)||days>3650)return null;
+      const at=updated+days*86400000;
+      return at>now?{at,source:"At your recent pace"}:null;
+    }
+    function awardCandidates(rows,hold,mode,context){
+      const now=Number(context.now??Date.now()),updated=context.updated??now;
+      const midnight=(Math.floor(now/86400000)+1)*86400000;
+      const candidates=[];
+      for(const x of rows){
+        if(x.completed||context.hidden?.has(x.key))continue;
+        if(x.plan?.counter==="awards"&&(context.noEnergy||context.noCash))continue;
+        const easy=easyAwardCandidate(x,hold,mode,context);
+        if(!easy||(context.noEnergy&&easy.energy!==0)||(context.noCash&&easy.money!==0))continue;
+        const finish=awardFinish(x,easy,now,updated);
+        if(context.todayOnly&&(!finish||finish.at>=midnight))continue;
+        candidates.push({x,easy,finish});
+      }
+      return candidates;
+    }
+    // Only count activities with a known direction: a Canada visit advances total trips;
+    // an unspecified trip cannot be assumed to advance the Canada award.
+    function indexAwardCounters(rows,hidden){
+      const index=new Map();
+      for(const row of rows){
+        const key=row.plan?.counter;
+        if(!key||row.completed||hidden?.has(row.key)||!(row.progress?.remaining>0))continue;
+        if(!index.has(key))index.set(key,[]);
+        index.get(key).push(row);
+      }
+      return index;
+    }
+    function sharedCounters(row){
+      const counter=row.plan?.counter;
+      if(!counter||!(row.progress?.remaining>0))return [];
+      const counters=[counter];
+      if(/^(mex|can|cay|haw|uk|lon|swi|arg|jap|chi|uae|dub|sa|sou)travel$/.test(counter))counters.push("traveltimes");
+      if(["strength","speed","defense","dexterity"].includes(counter))counters.push("totalstats");
+      if(/^degree[0-9]+$/.test(counter))counters.push("educationcourses");
+      return counters;
+    }
+    function sharedAwards(row,index){
+      return sharedCounters(row).flatMap(key=>index.get(key)||[]).filter(other=>other.key!==row.key)
+        .sort((a,b)=>a.progress.remaining-b.progress.remaining||a.name.localeCompare(b.name));
+    }
+    function fundingAwards(candidates,shortfall){
+      if(shortfall<=0)return [];
+      // A check of an existing threshold has no known award time. Spending merits
+      // or reaching an award-count milestone cannot independently fund the plan.
+      return candidates.filter(c=>c.finish&&c.easy.group!=="merit-upgrade"&&c.x.plan?.counter!=="awards")
+        .sort((a,b)=>a.finish.at-b.finish.at||a.easy.score-b.easy.score||a.x.name.localeCompare(b.x.name)).slice(0,shortfall);
+    }
     function rankAchievementPlans(rows,hold,mode="balanced",context={}){
-      const candidates=rows.map(x=>({x,easy:easyAwardCandidate(x,hold,mode,context)})).filter(x=>x.easy);
-      candidates.sort((a,b)=>a.easy.score-b.easy.score||(b.x.progress?.percent??0)-(a.x.progress?.percent??0)||a.x.name.localeCompare(b.x.name));
+      const candidates=awardCandidates(rows,hold,mode,context),index=indexAwardCounters(context.catalog||rows,context.hidden);
+      for(const c of candidates){
+        const counters=sharedCounters(c.x);
+        c.sharedCount=counters.length?Math.max(0,counters.reduce((n,key)=>n+(index.get(key)?.length||0),0)-1):0;
+      }
+      candidates.sort((a,b)=>a.easy.score-b.easy.score||b.sharedCount-a.sharedCount||(b.x.progress?.percent??0)-(a.x.progress?.percent??0)||a.x.name.localeCompare(b.x.name));
       const selected=[],seen=new Set();
       // Fill quick wins before using longer projects. Prefer a different activity within each tier.
       for(const longer of [false,true]){
@@ -362,7 +468,7 @@
         if(selected.length<5)selected.push(...deferred.slice(0,5-selected.length));
         if(selected.length===5)break;
       }
-      return selected.map(c=>({...c.x,easy:c.easy}));
+      return selected.map(c=>({...c.x,easy:c.easy,finish:c.finish,shared:sharedAwards(c.x,index)}));
     }
     function meritWeight(name,style,director){
       const n=String(name||"").toLowerCase();
@@ -405,13 +511,38 @@
       return cash+" | E: "+(p.energy===null?"unknown":achFmt(p.energy))+" | N: "+(p.nerve===null?"unknown":achFmt(p.nerve))+(p.points===null?"":" | "+achFmt(p.points)+" points");
     }
     function achievementFresh(){return achievementData&&["ready","cached"].includes(achievementStatus)&&Date.now()-achievementData.updated<=600000;}
+    function shortlistContext(d){
+      return {...shortlistFilters,hidden:hiddenAwards,now:Date.now(),updated:d.updated,catalog:d.rows,balance:d.merits?.available,upgrades:d.upgrades,goals:meritGoals};
+    }
+    function sharedAwardText(row){
+      const matches=row.shared;
+      if(!matches?.length)return "";
+      return "The same action also advances "+matches.slice(0,2).map(x=>x.name).join(" and ")+(matches.length>2?" and "+(matches.length-2)+" more":"")+".";
+    }
+    function finishLabel(finish){
+      const date=new Date(finish.at),today=new Date().toISOString().slice(0,10);
+      const day=date.toISOString().slice(0,10)===today?"today":date.toLocaleDateString("en-GB",{timeZone:"UTC",day:"numeric",month:"short",year:"numeric"});
+      const time=date.toLocaleTimeString("en-GB",{timeZone:"UTC",hour:"2-digit",minute:"2-digit"});
+      return finish.source+" · "+day+" "+time+" TCT";
+    }
     function renderAchievementToday(){
       const host=root.querySelector("#staxx-ach-today");if(!host)return;host.replaceChildren();
+      const unlocked=Object.entries(trackedOwnership).filter(([key,v])=>achievementGoals.has(key)&&v.state==="new");
+      if(unlocked.length){
+        const card=node("article","staxx-overview-card staxx-ach-unlock");card.append(node("b","","Tracked goals unlocked"));
+        for(const [key,v] of unlocked){
+          const line=node("p","",v.name+" "),b=node("button","", "Mark seen");
+          b.type="button";b.dataset.achSeen=key;b.setAttribute("aria-label","Mark "+v.name+" as seen");line.append(b);card.append(line);
+        }
+        host.append(card);
+      }
       if(!achievementFresh())return;
-      const d=achievementData,top=rankAchievementPlans(d.rows,d.warHold,easyMode,{balance:d.merits?.available,upgrades:d.upgrades,goals:meritGoals}).slice(0,1);
+      const d=achievementData,top=rankAchievementPlans(d.rows,d.warHold,easyMode,shortlistContext(d)).slice(0,1);
       if(!top.length)return;
       const a=node("article","staxx-overview-card");a.append(node("b","",top[0].easy.tier==="Longer-term goal"?"Next measured merit goal":"Merit opportunity"),node("p","",top[0].name+" | "+top[0].easy.reason));
-      const b=node("button","staxx-overview-switch","Review easiest merits");b.type="button";b.dataset.achView="recommended";a.append(b);host.append(a);
+      if(top[0].shared.length)a.append(node("small","",sharedAwardText(top[0])));
+      a.append(achievementViewButton("recommended","Review easiest merits"));
+      const hide=node("button","","Hide this suggestion");hide.type="button";hide.dataset.achHide=top[0].key;a.append(hide);host.append(a);
     }
     function achievementToolCard(id){
       if(!achievementFresh())return null;
@@ -422,6 +553,26 @@
       if(!chosen.length){a.append(node("small","","No verified measurable matching goals."));return a;}
       for(const x of chosen)a.append(node("p","",x.name+" | "+achFmt(x.progress.remaining)+" remaining"+(x.plan.days?" | ~"+x.plan.days+" days":"")));
       return a;
+    }
+    function appendFundingPlan(card,upgradeId,cost,d,candidates,openDetails){
+      if(!achievementFresh()||!d.merits){card.append(node("p","","Refresh your merit balance to see a funding route."));return;}
+      const missing=Math.max(0,cost-d.merits.available);
+      if(!missing){card.append(node("p","","Your current balance covers this goal."));return;}
+      const picks=fundingAwards(candidates,missing),details=node("details");
+      details.dataset.achDetail="fund-"+upgradeId;details.open=openDetails.has(details.dataset.achDetail);
+      details.append(node("summary","","Fastest awards for "+missing+" more "+(missing===1?"merit":"merits")));
+      if(picks.length){
+        const list=node("ol"),rest=node("ol");rest.start=6;
+        for(const [i,c] of picks.entries()){
+          const li=node("li");li.append(node("b","",c.x.name),node("p","",finishLabel(c.finish)),node("small","",c.easy.action));
+          (i<5?list:rest).append(li);
+        }
+        details.append(list);
+        if(picks.length>5){const more=node("details");more.append(node("summary","","See "+(picks.length-5)+" more"),rest);details.append(more);}
+        details.append(node("small","staxx-trendnote","One merit per award. Times are individual estimates and activities can compete for time."));
+      }
+      if(picks.length<missing)details.append(node("p","","No timed route for the remaining "+(missing-picks.length)+" "+(missing-picks.length===1?"merit":"merits")+" with your current filters."));
+      card.append(details);
     }
     function renderMeritOptimiser(results,d){
       const a=node("article","staxx-overview-card");a.append(node("b","","Allocate available merits"),node("p","","Preference-weighted planning, not a guaranteed objective optimum. No reset or automatic spending."));
@@ -458,6 +609,7 @@
       const d=achievementData,stale=d&&Date.now()-d.updated>600000;
       const messages={idle:"Open this section to load Torn awards.",waiting:"Connecting to Training-TornStaxx...",loading:"Reading Torn awards...",missing:"Achievement provider not responding. Update and enable Training-TornStaxx main 0.41.0 or later, then refresh.",key:"Torn PDA API key unavailable in Training-TornStaxx.",error:"Torn did not return complete award data. Retry after one minute; check API permissions.",retry:"Refresh limited to once per minute.",cached:"Showing previous snapshot; refresh limited to once per minute.",ready:"Torn award ownership verified at last refresh."};
       status.textContent=(messages[achievementStatus]||messages.idle)+(d?" Last checked "+new Date(d.updated).toLocaleString("en-GB")+(stale||achievementStatus!=="ready"?" (previous snapshot).":"."):"");
+      const openDetails=new Set(Array.from(results.querySelectorAll("details[data-ach-detail][open]"),el=>el.dataset.achDetail));
       summary.replaceChildren();results.replaceChildren();
       if(!d)return;
       const count=k=>d.rows.filter(x=>x.kind===k&&x.completed).length;
@@ -474,7 +626,10 @@
       const query=search.value.trim().toLowerCase();
       const modeControl=root.querySelector("#staxx-ach-easy-mode");
       modeControl.value=easyMode;
-      modeControl.hidden=filter.value!=="recommended";root.querySelector('label[for="staxx-ach-easy-mode"]').hidden=modeControl.hidden;
+      modeControl.hidden=!["recommended","merits"].includes(filter.value);root.querySelector('label[for="staxx-ach-easy-mode"]').hidden=modeControl.hidden;
+      const limits=root.querySelector("#staxx-ach-limits");
+      limits.hidden=!["recommended","merits"].includes(filter.value);
+      for(const b of limits.querySelectorAll("[data-ach-toggle]"))b.setAttribute("aria-pressed",String(shortlistFilters[b.dataset.achToggle]));
       const awardView=!["merits","optimizer"].includes(filter.value);
       category.hidden=!awardView;root.querySelector('label[for="staxx-ach-category"]').hidden=!awardView;
       search.hidden=filter.value==="optimizer";root.querySelector('label[for="staxx-ach-search"]').hidden=search.hidden;
@@ -483,14 +638,18 @@
       if(filter.value==="optimizer"){renderMeritOptimiser(results,d);return;}
       if(filter.value==="merits"){
         const chosen=d.upgrades.filter(x=>!query||(x.name+" "+x.description).toLowerCase().includes(query));
+        const candidates=achievementFresh()?awardCandidates(d.rows,d.warHold,easyMode,shortlistContext(d)):[];
         let cost=0,unknown=false;
         for(const x of d.upgrades){const target=meritGoals[x.id];if(!achNum(target)||target>10)continue;if(x.level===null){unknown=true;continue;}if(target>x.level)cost+=meritGoalCost(x.level,target);}
         results.append(node("p","",unknown?"Planned total incomplete: upgrade level unknown.":"Planned upgrade cost: "+achFmt(cost)+" merits. "+(d.merits?"Additional merits needed: "+achFmt(Math.max(0,cost-d.merits.available))+".":"Balance unknown.")));
-        for(const x of chosen){
+        const saved=chosen.filter(x=>x.level!==null&&meritGoals[x.id]>x.level);
+        if(saved.length>1)results.append(node("small","staxx-trendnote","Each upgrade route assumes you put your current balance towards that goal first."));
+        for(const x of [...saved,...chosen.filter(x=>!saved.includes(x))]){
           const a=node("article","staxx-overview-card staxx-ach-card");a.append(node("b","",x.name),node("p","",x.description),node("p","",x.level===null?"Current level unknown":"Level "+x.level+"/10 | "+(x.level===10?"Maxed":(x.level+1)+" merits for next level")));
           if(x.level!==null){const target=achNum(meritGoals[x.id])?Math.max(x.level,Math.min(10,meritGoals[x.id])):x.level;
             const label=node("label","","Goal level");const sel=node("select");sel.dataset.achMerit=String(x.id);
             for(let i=x.level;i<=10;i++){const o=node("option","","Level "+i);o.value=String(i);sel.append(o);}sel.value=String(target);label.append(sel);a.append(label,node("p","","Merits needed for goal: "+meritGoalCost(x.level,target)));}
+          if(x.level!==null&&meritGoals[x.id]>x.level&&meritGoals[x.id]<=10)appendFundingPlan(a,x.id,meritGoalCost(x.level,meritGoals[x.id]),d,candidates,openDetails);
           results.append(a);
         }
         if(!chosen.length)results.append(node("p","staxx-empty","No matching upgrade data."));
@@ -503,7 +662,9 @@
         return;
       }
       const matching=selectAchievementRows(d.rows,recommended?"unearned":filter.value,query,category.value,achievementGoals);
-      const rows=recommended?rankAchievementPlans(matching,d.warHold,easyMode,{balance:d.merits?.available,upgrades:d.upgrades,goals:meritGoals}):matching;
+      const rows=recommended?rankAchievementPlans(matching,d.warHold,easyMode,shortlistContext(d)):filter.value==="hidden"?matching.filter(x=>hiddenAwards.has(x.key)):matching;
+      if(recommended&&hiddenAwards.size)results.append(achievementViewButton("hidden","Manage hidden suggestions ("+hiddenAwards.size+")"));
+      if(recommended&&(shortlistFilters.noEnergy||shortlistFilters.noCash))results.append(node("small","staxx-trendnote","Only awards with a known zero cost for each selected resource qualify."));
       if(recommended&&rows.length){
         const longer=rows.filter(x=>x.easy.tier==="Longer-term goal").length;
         const counts=[];
@@ -525,11 +686,13 @@
           }
         }else if(!e)a.append(node("small","staxx-trendnote","Torn has not supplied a progress counter."));
         if(e){
-          if(x.plan?.eta)a.append(node("small","staxx-trendnote",(x.plan.forecast==="course"?"Course finishes ":"Estimated finish ")+new Date(x.plan.eta).toLocaleDateString("en-GB",{timeZone:"UTC"})));
+          if(x.finish)a.append(node("small","staxx-trendnote",finishLabel(x.finish)));
+          else if(x.plan?.eta)a.append(node("small","staxx-trendnote",(x.plan.forecast==="course"?"Course finishes ":"Estimated finish ")+new Date(x.plan.eta).toLocaleDateString("en-GB",{timeZone:"UTC"})));
           a.append(node("p","",e.action));
+          if(x.shared.length)a.append(node("p","staxx-ach-shared",sharedAwardText(x)));
         }
         if(!x.completed){
-          const detail=node("details");detail.append(node("summary","","Costs, timing and evidence"));
+          const detail=node("details");detail.dataset.achDetail=x.key;detail.open=openDetails.has(x.key);detail.append(node("summary","","Costs, timing and evidence"));
           if(e){
             detail.append(node("p","",e.reason),node("p","","Energy "+achFmt(e.energy)+" · Nerve "+achFmt(e.nerve)+" · Cash "+(e.money===null?"unknown":"$"+achFmt(e.money))),node("small","staxx-trendnote",e.confidence+(e.minutes?" | ~"+e.minutes+" min to act or check":"")));
             if(x.plan?.points!=null)detail.append(node("p","",achFmt(x.plan.points)+" points"));
@@ -553,6 +716,10 @@
         if(tracked||!x.completed){
           const b=node("button","",tracked?"Remove goal":achievementGoals.size>=100?"100 goals tracked":"Track goal");b.type="button";b.dataset.achGoal=x.key;b.disabled=!tracked&&achievementGoals.size>=100;actions.append(b);
         }
+        if(recommended||hiddenAwards.has(x.key)){
+          const b=node("button","",hiddenAwards.has(x.key)?"Restore suggestion":"Hide from Easiest 5");
+          b.type="button";b.dataset.achHide=x.key;b.dataset.restore=String(hiddenAwards.has(x.key));actions.append(b);
+        }
         a.append(actions);results.append(a);
       }
       if(rows.length>achievementLimit){const b=node("button","","Show 25 more");b.type="button";b.dataset.achMore="1";results.append(b);}
@@ -562,10 +729,14 @@
         if(!filtered){
           if(recommended){
             if(!matching.length)reason="Every award in this catalogue is already earned.";
+            else if(matching.every(x=>hiddenAwards.has(x.key)))reason="All matching suggestions are hidden.";
+            else if(shortlistFilters.todayOnly)reason="No matching awards have an estimated finish before midnight TCT.";
+            else if(shortlistFilters.noEnergy||shortlistFilters.noCash)reason="No matching awards have a verified zero cost for your selected resources.";
             else if(d.warHold)reason="No qualifying merit opportunities during the ranked-war hold.";
             else if(easyMode!=="balanced")reason="No unearned awards have verified costs within this budget.";
             else reason="No quick action or measurable progress is available for these unearned awards.";
-          }else if(filter.value==="goals")reason="Your tracked awards will appear here.";
+          }else if(filter.value==="hidden")reason="You have no hidden suggestions.";
+          else if(filter.value==="goals")reason="Your tracked awards will appear here.";
           else if(filter.value==="closest")reason="No unearned award has a measured, unfinished counter.";
           else reason="No awards in this view.";
         }else if(recommended&&matching.length)reason="These filters include unearned awards, but none qualifies for this shortlist.";
@@ -579,7 +750,7 @@
       const v=e.detail;if(v?.version!==1||!["loading","ready","cached","retry","key","error"].includes(v.status))return;
       const data=cleanAchievements(v.snapshot);
       if(data)achievementData=data;
-      achievementStatus=v.status==="ready"&&!data?"error":v.status;recordGoalBaselines();renderAchievements();renderAchievementToday();renderDashboard();
+      achievementStatus=v.status==="ready"&&!data?"error":v.status;if(data){recordGoalBaselines();observeTrackedUnlocks();}renderAchievements();renderAchievementToday();renderDashboard();
     });
     root.addEventListener("input",e=>{if(e.target.id==="staxx-ach-search"){achievementLimit=25;renderAchievements();}});
     root.addEventListener("change",e=>{
@@ -590,6 +761,19 @@
       if(x.id==="staxx-ach-filter"||x.id==="staxx-ach-category"){achievementLimit=25;renderAchievements();return;}
       if(x.dataset.achMerit){const id=Number(x.dataset.achMerit),target=Number(x.value),row=achievementData?.upgrades.find(a=>a.id===id);
         if(row&&row.level!==null&&achNum(target)&&target>=row.level&&target<=10){if(target===row.level)delete meritGoals[id];else meritGoals[id]=target;saveLocal(meritGoalKey,meritGoals);renderAchievements();renderAchievementToday();}}
+    });
+    window.addEventListener("storage",e=>{
+      if(![shortlistKey,hiddenAwardKey,ownershipKey,goalKey,awardBaselineKey].includes(e.key))return;
+      if(e.key===shortlistKey)shortlistFilters=readShortlistFilters();
+      if(e.key===hiddenAwardKey)hiddenAwards=readHiddenAwards();
+      if(e.key===goalKey){
+        const keys=safeRead(goalKey,[]);achievementGoals=new Set(Array.isArray(keys)?keys.filter(validAwardKey).slice(0,100):[]);
+      }
+      if(e.key===goalKey||e.key===ownershipKey)trackedOwnership=readTrackedOwnership();
+      if(e.key===goalKey||e.key===awardBaselineKey){
+        loadGoalBaselines(safeRead(awardBaselineKey,{}));
+      }
+      renderAchievements();renderAchievementToday();renderDashboard();
     });
     // End achievement UI.
 
@@ -1469,12 +1653,28 @@
         return;
       }
       if(b.hasAttribute("data-ach-refresh")){requestAchievements(true);return;}
+      if(b.dataset.achToggle&&Object.hasOwn(shortlistFilters,b.dataset.achToggle)){
+        const key=b.dataset.achToggle;
+        shortlistFilters=readShortlistFilters();shortlistFilters[key]=!shortlistFilters[key];
+        saveLocal(shortlistKey,shortlistFilters);renderAchievements();renderAchievementToday();return;
+      }
+      if(b.dataset.achHide&&validAwardKey(b.dataset.achHide)&&achievementData?.rows.some(x=>x.key===b.dataset.achHide)){
+        hiddenAwards=readHiddenAwards();
+        if(b.dataset.restore==="true")hiddenAwards.delete(b.dataset.achHide);
+        else if(hiddenAwards.size<2500)hiddenAwards.add(b.dataset.achHide);
+        saveLocal(hiddenAwardKey,[...hiddenAwards]);renderAchievements();renderAchievementToday();return;
+      }
+      if(b.dataset.achSeen&&achievementGoals.has(b.dataset.achSeen)){
+        trackedOwnership=readTrackedOwnership();const entry=trackedOwnership[b.dataset.achSeen];
+        if(entry?.state==="new"){entry.state="seen";saveLocal(ownershipKey,trackedOwnership);}
+        renderAchievementToday();return;
+      }
       if(b.dataset.achView){
         const view=b.dataset.achView,filter=root.querySelector("#staxx-ach-filter");
         if(view==="balanced"){easyMode="balanced";saveLocal(easyModeKey,easyMode);}
         else{
           root.querySelector("#staxx-ach-search").value="";root.querySelector("#staxx-ach-category").value="";
-          if(["goals","recommended","unearned"].includes(view))filter.value=view;
+          if(["goals","recommended","unearned","hidden"].includes(view))filter.value=view;
         }
         achievementLimit=25;
         if(root.querySelector('[data-hub-section="achievements"]').hidden)switchHubView("achievements");
@@ -1484,9 +1684,10 @@
       if(b.dataset.achMore){achievementLimit+=25;renderAchievements();return;}
       if(b.dataset.achGoal&&validAwardKey(b.dataset.achGoal)&&achievementData?.rows.some(x=>x.key===b.dataset.achGoal)){
         if(achievementGoals.delete(b.dataset.achGoal)){
+          trackedOwnership=readTrackedOwnership();saveLocal(ownershipKey,trackedOwnership);
           delete goalBaselines[b.dataset.achGoal];saveLocal(awardBaselineKey,goalBaselines);
         }else if(achievementGoals.size<100){
-          achievementGoals.add(b.dataset.achGoal);recordGoalBaselines();
+          achievementGoals.add(b.dataset.achGoal);recordGoalBaselines();observeTrackedUnlocks();
         }
         saveLocal(goalKey,[...achievementGoals]);renderAchievements();renderAchievementToday();renderDashboard();return;
       }
@@ -1728,7 +1929,15 @@
     window.addEventListener?.("popstate",()=>{renderContext();renderPageShortcut();});
     window.addEventListener?.("resize",renderContext);
     window.setInterval?.(()=>{if(!document.hidden){renderContext();if(expanded)renderPageShortcut();}},15000);
-    window.setInterval?.(()=>{if(!document.hidden&&expanded){renderEarlyWarnings();if(hubView==='dashboard')renderDailyReport();}},60000);
+    let lastAwardDay=Math.floor(Date.now()/86400000);
+    window.setInterval?.(()=>{
+      if(document.hidden||!expanded)return;
+      renderEarlyWarnings();if(hubView==="dashboard")renderDailyReport();
+      if(!["today","achievements"].includes(hubView))return;
+      const now=Date.now(),day=Math.floor(now/86400000);
+      if(day!==lastAwardDay){lastAwardDay=day;renderAchievements();renderAchievementToday();}
+      if(!achievementFresh()&&achievementStatus!=="loading"&&achievementStatus!=="waiting"&&now-achievementRequested>=600000)requestAchievements(false);
+    },60000);
     document.addEventListener('staxx:time-budget-request',()=>document.dispatchEvent(new CustomEvent('staxx:time-budget',{detail:{minutes:sessionMinutes}})));
     // Older v1 notifications cannot be trusted for dismiss-state comparisons.
     render();

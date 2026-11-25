@@ -1,3 +1,7 @@
+## 4.8.0 - Shortlist filters, hidden awards and upgrade funding
+
+Hide individual suggestions from Easiest 5 and restore them under Hidden suggestions. No E and No cash each require a verified zero for that resource. Finish today uses the end of the Torn day, an action-time estimate, a scheduled course finish or your measured pace. Cards identify other unearned awards advanced by the same activity. Today flags newly confirmed tracked unlocks until marked seen. In Merit upgrades, save a target level to see the earliest timed awards for the gap after your current balance. Uses Training main 0.41.0.
+
 ## 4.7.0 - Personal merit shortlist and tracked progress
 
 Easiest 5 puts near-term opportunities first and fills open places with measured longer-term goals. Each goal shows the next step, remaining progress and a finish date when supported. Track a goal to see how far its counter has moved. Saved goals start measuring from their first fresh reading. Search and category filters fold away on mobile. Update Training main to 0.41.0 for grouped Torn stats and education progress.
